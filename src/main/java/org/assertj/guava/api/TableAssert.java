@@ -15,8 +15,12 @@ package org.assertj.guava.api;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import static org.assertj.guava.error.ShouldContainValues.shouldContainValues;
+import static org.assertj.guava.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.guava.error.TableShouldContainColumns.tableShouldContainColumns;
 import static org.assertj.guava.error.TableShouldContainRows.tableShouldContainRows;
+import static org.assertj.guava.error.TableShouldContainCell.tableShouldContainCell;
+import static org.assertj.guava.error.TableShouldHaveRowCount.tableShouldHaveRowCount;
+import static org.assertj.guava.error.TableShouldHaveColumnCount.tableShouldHaveColumnCount;
 
 import java.util.Set;
 
@@ -44,6 +48,102 @@ public class TableAssert<R, C, V> extends AbstractAssert<TableAssert<R, C, V>, T
   // visible for test
   protected Table<R, C, V> getActual() {
     return actual;
+  }
+
+  /**
+   * Verifies that the actual {@link Table} has the expected number of rows.
+   *
+   * <p>
+   * Example :
+   *
+   * <pre>
+   * Table<Integer, Integer, String> actual actual = HashBasedTable.create();;
+   *
+   * actual.put(1, 3, "Millard Fillmore");
+   * actual.put(1, 4, "Franklin Pierce");
+   * actual.put(2, 5, "Grover Cleveland");
+   *
+   * assertThat(actual).hasRowCount(2);
+   * </pre>
+   *
+   * @param expectedSize The columns to look for in the actual {@link Table}
+   * @return this {@link TableAssert} for assertion chaining.
+   * @throws IllegalArgumentException if the expected size is negative
+   * @throws AssertionError           if the actual {@link Table} is {@code null}.
+   * @throws AssertionError           if the actual {@link Table} does not have the expected row size.
+   */  
+  public TableAssert<R, C, V> hasRowCount(int expectedSize) {
+    Objects.instance().assertNotNull(info, actual);
+    checkArgument(expectedSize >= 0, "The expected size should not be negative.");
+
+    if (actual.rowKeySet().size() != expectedSize) {
+      throw failures.failure(info, tableShouldHaveRowCount(actual, actual.rowKeySet().size(), expectedSize));
+    }
+    return myself;
+  }
+
+  /**
+   * Verifies that the actual {@link Table} has the expected number of columns.
+   *
+   * <p>
+   * Example :
+   *
+   * <pre>
+   * Table<Integer, Integer, String> actual actual = HashBasedTable.create();;
+   *
+   * actual.put(1, 3, "Millard Fillmore");
+   * actual.put(1, 4, "Franklin Pierce");
+   * actual.put(2, 5, "Grover Cleveland");
+   *
+   * assertThat(actual).hasColumnCount(3);
+   * </pre>
+   *
+   * @param expectedSize The columns to look for in the actual {@link Table}
+   * @return this {@link TableAssert} for assertion chaining.
+   * @throws IllegalArgumentException if the expected size is negative
+   * @throws AssertionError           if the actual {@link Table} is {@code null}.
+   * @throws AssertionError           if the actual {@link Table} does not have the expected column size.
+   */  
+  public TableAssert<R, C, V> hasColumnCount(int expectedSize) {
+    Objects.instance().assertNotNull(info, actual);
+    checkArgument(expectedSize >= 0, "The expected size should not be negative.");
+
+    if (actual.columnKeySet().size() != expectedSize) {
+      throw failures.failure(info, tableShouldHaveColumnCount(actual, actual.columnKeySet().size(), expectedSize));
+    }
+    return myself;
+  }
+
+  /**
+   * Verifies that the actual {@link Table} has the expected number of cells.
+   *
+   * <p>
+   * Example :
+   *
+   * <pre>
+   * Table<Integer, Integer, String> actual actual = HashBasedTable.create();;
+   *
+   * actual.put(1, 3, "Millard Fillmore");
+   * actual.put(1, 4, "Franklin Pierce");
+   * actual.put(2, 5, "Grover Cleveland");
+   *
+   * assertThat(actual).hasSize(3);
+   * </pre>
+   *
+   * @param expectedSize The columns to look for in the actual {@link Table}
+   * @return this {@link TableAssert} for assertion chaining.
+   * @throws IllegalArgumentException if the expected size is negative
+   * @throws AssertionError           if the actual {@link Table} is {@code null}.
+   * @throws AssertionError           if the actual {@link Table} does not have the expected number of cells.
+   */  
+  public TableAssert<R, C, V> hasSize(int expectedSize) {
+    Objects.instance().assertNotNull(info, actual);
+    checkArgument(expectedSize >= 0, "The expected size should not be negative.");
+
+    if (actual.size() != expectedSize) {
+      throw failures.failure(info, shouldHaveSize(actual, actual.size(), expectedSize));
+    }
+    return myself;
   }
 
   /**
@@ -163,6 +263,45 @@ public class TableAssert<R, C, V> extends AbstractAssert<TableAssert<R, C, V>, T
 
     if (!valuesNotFound.isEmpty()) {
       throw failures.failure(info, shouldContainValues(actual, values, valuesNotFound));
+    }
+
+    return myself;
+  }
+
+  /**
+   * Verifies that the actual {@link Table} contains the mapping of row/column to value.
+   *
+   * <p>
+   * Example :
+   *
+   * <pre>
+   * Table<Integer, Integer, String> actual actual = HashBasedTable.create();;
+   *
+   * actual.put(1, 3, "Millard Fillmore");
+   * actual.put(1, 4, "Franklin Pierce");
+   * actual.put(2, 5, "Grover Cleveland");
+   *
+   * assertThat(actual).containsCell(1, 3, "Millard Fillmore");
+   * </pre>
+   *
+   * @param row The row key to lookup in the actual {@link Table}
+   * @param column The column key to lookup in the actual {@link Table}
+   * @param value The value to look for in the actual {@link Table}
+   * @return this {@link TableAssert} for assertion chaining.
+   * @throws AssertionError if the actual {@link Table} is {@code null}.
+   * @throws AssertionError if the row key is {@code null}.
+   * @throws AssertionError if the column key is {@code null}.
+   * @throws AssertionError if the expected value is {@code null}.
+   */
+  public TableAssert<R,C,V> containsCell(R row, C column, V expectedValue) {
+    Objects.instance().assertNotNull(info, actual);
+    checkArgument(row != null, "The row to look for should not be null.");
+    checkArgument(column != null, "The column to look for should not be null.");
+    checkArgument(expectedValue != null, "The value to look for should not be null.");
+
+    V actualValue = actual.get(row, column);
+    if (!expectedValue.equals(actualValue)) {
+      throw failures.failure(info, tableShouldContainCell(actual, row, column, expectedValue, actualValue));
     }
 
     return myself;
