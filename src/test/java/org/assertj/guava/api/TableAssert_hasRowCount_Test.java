@@ -24,7 +24,7 @@ import org.junit.Test;
 /**
  * @author David Harris
  */
-public class TableAssert_hasSize_Test extends TableAssertBaseTest {
+public class TableAssert_hasRowCount_Test extends TableAssertBaseTest {
 
   @Test
   public void should_pass_if_actual_has_0_rows() {
@@ -45,7 +45,7 @@ public class TableAssert_hasSize_Test extends TableAssertBaseTest {
   }
 
   @Test
-  public void shoudl_fail_if_expected_is_negative() {
+  public void should_fail_if_expected_is_negative() {
     expectException(IllegalArgumentException.class, "The expected size should not be negative.");
     assertThat(actual).hasRowCount(-1);
   }
