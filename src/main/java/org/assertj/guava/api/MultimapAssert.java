@@ -17,6 +17,7 @@ import static com.google.common.collect.Sets.newLinkedHashSet;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
+import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.guava.error.ShouldContainKeys.shouldContainKeys;
 import static org.assertj.guava.error.ShouldContainValues.shouldContainValues;
 import static org.assertj.guava.util.ExceptionUtils.throwIllegalArgumentExceptionIfTrue;
@@ -198,6 +199,28 @@ public class MultimapAssert<K, V> extends AbstractAssert<MultimapAssert<K, V>, M
     Objects.instance().assertNotNull(info, actual);
     if (!actual.isEmpty()) {
       throw failures.failure(info, shouldBeEmpty(actual));
+    }
+  }
+
+  /**
+   * Verifies that the actual {@link Multimap} is not empty.
+   *
+   * <p>
+   * Example :
+   *
+   * <pre>
+   * Multimap&lt;String, String&gt; actual = ArrayListMultimap.create();
+   * 
+   * assertThat(actual).isNotEmpty();
+   * </pre>
+   *
+   * @throws AssertionError if the actual {@link Multimap} is {@code null}.
+   * @throws AssertionError if the actual {@link Multimap} is empty.
+   */
+  public void isNotEmpty() {
+    Objects.instance().assertNotNull(info, actual);
+    if (actual.isEmpty()) {
+      throw failures.failure(info, shouldNotBeEmpty());
     }
   }
 
