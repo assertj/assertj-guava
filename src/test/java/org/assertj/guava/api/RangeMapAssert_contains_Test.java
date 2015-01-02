@@ -21,7 +21,7 @@ import static org.junit.Assert.fail;
 import org.assertj.guava.data.MapEntry;
 import org.junit.Test;
 
-public class RangeMapAssert_conteins_Test extends RangeMapAssertBaseTest {
+public class RangeMapAssert_contains_Test extends RangeMapAssertBaseTest {
 
   @Test
   public void should_pass_if_actual_contains_given_entries() {
