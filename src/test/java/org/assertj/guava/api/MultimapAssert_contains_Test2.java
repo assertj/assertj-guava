@@ -21,7 +21,7 @@ import static org.junit.Assert.fail;
 import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 
-public class MultimapAssert_contains_Test extends MultimapAssertBaseTest {
+public class MultimapAssert_contains_Test2 extends MultimapAssertBaseTest {
 
   @Test
   public void should_pass_if_actual_contains_given_entries() {
