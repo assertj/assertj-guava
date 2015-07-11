@@ -23,11 +23,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 
 public class MultimapAssert_hasSameEntriesAs_Test extends MultimapAssertBaseTest {
 
-  private Multimap<String, String> other;
+  private HashMultimap<String, String> other;
 
   @Before
   public void setup() {
@@ -45,7 +44,7 @@ public class MultimapAssert_hasSameEntriesAs_Test extends MultimapAssertBaseTest
 
   @Test
   public void should_pass_with_multimaps_having_the_same_entries_with_different_but_compatible_generic_types() {
-    Multimap<Object, Object> other = HashMultimap.create();
+    HashMultimap<Object, Object> other = HashMultimap.create();
     other.putAll("Lakers", newHashSet("Kobe Bryant", "Magic Johnson", "Kareem Abdul Jabbar"));
     other.putAll("Bulls", newHashSet("Michael Jordan", "Scottie Pippen", "Derrick Rose"));
     other.putAll("Spurs", newHashSet("Tony Parker", "Tim Duncan", "Manu Ginobili"));
