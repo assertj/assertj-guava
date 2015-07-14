@@ -59,7 +59,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * <p>
    * Example :
    *
-   * <pre><code class='java'> 12);
+   * <pre><code class='java'>Range<Integer> range = Range.closed(10, 12);
    *
    * assertThat(range).contains(10, 11, 12);</code></pre>
    *
@@ -94,7 +94,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * <p>
    * Example :
    *
-   * <pre><code class='java'> 12);
+   * <pre><code class='java'>Range<Integer> range = Range.closed(10, 12);
    *
    * assertThat(range).doesNotContain(13);</code></pre>
    *
@@ -124,7 +124,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * <p>
    * Example :
    *
-   * <pre><code class='java'> 12);
+   * <pre><code class='java'>Range<Integer> range = Range.closed(10, 12);
    *
    * assertThat(range).hasClosedLowerBound();</code></pre>
    *
@@ -147,7 +147,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * <p>
    * Example :
    *
-   * <pre><code class='java'> 12);
+   * <pre><code class='java'>Range<Integer> range = Range.closed(10, 12);
    *
    * assertThat(range).hasClosedUpperBound();</code></pre>
    *
@@ -170,7 +170,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * <p>
    * Example :
    *
-   * <pre><code class='java'> 12);
+   * <pre><code class='java'>Range<Integer> range = Range.closed(10, 12);
    *
    * assertThat(range).hasLowerEndpointEqualTo(10);</code></pre>
    *
@@ -195,7 +195,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * <p>
    * Example :
    *
-   * <pre><code class='java'> 12);
+   * <pre><code class='java'>Range<Integer> range = Range.open(1, 2);
    *
    * assertThat(range).hasOpenedLowerBound();</code></pre>
    *
@@ -218,7 +218,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * <p>
    * Example :
    *
-   * <pre><code class='java'> 12);
+   * <pre><code class='java'>Range<Integer> range = Range.open(10, 12);
    *
    * assertThat(range).hasOpenedUpperBound();</code></pre>
    *
@@ -241,7 +241,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * <p>
    * Example :
    *
-   * <pre><code class='java'> 12);
+   * <pre><code class='java'>Range<Integer> range = Range.open(10, 12);
    *
    * assertThat(range).hasUpperEndpointEqualTo(12);</code></pre>
    *
@@ -266,7 +266,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * <p>
    * Example :
    *
-   * <pre><code class='java'> 12);
+   * <pre><code class='java'>Range<Integer> range = Range.closedOpen(0, 0);
    *
    * assertThat(range).isEmpty();</code></pre>
    *
@@ -289,7 +289,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * <p>
    * Example :
    *
-   * <pre><code class='java'> 12);
+   * <pre><code class='java'>Range<Integer> range = Range.closed(0, 0);
    *
    * assertThat(range).isNotEmpty();</code></pre>
    *
