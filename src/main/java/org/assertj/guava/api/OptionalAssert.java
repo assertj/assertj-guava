@@ -13,6 +13,7 @@
 package org.assertj.guava.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.assertj.guava.error.OptionalShouldBeAbsent.shouldBeAbsent;
 import static org.assertj.guava.error.OptionalShouldBePresent.shouldBePresent;
 import static org.assertj.guava.error.OptionalShouldBePresentWithValue.shouldBePresentWithValue;
@@ -56,11 +57,9 @@ public class OptionalAssert<T> extends AbstractAssert<OptionalAssert<T>, Optiona
    * <p>
    * Example :
    *
-   * <pre><code class='java'>
-   * Optional&lt;String&gt; optional = Optional.of(&quot;Test&quot;);
+   * <pre><code class='java'> Optional.of(&quot;Test&quot;);
    *
-   * assertThat(optional).contains(&quot;Test&quot;);
-   * </code></pre>
+   * assertThat(optional).contains(&quot;Test&quot;);</code></pre>
    *
    * @param value the value to look for in actual {@link Optional}.
    * @return this {@link OptionalAssert} for assertions chaining.
@@ -84,11 +83,9 @@ public class OptionalAssert<T> extends AbstractAssert<OptionalAssert<T>, Optiona
    * <p>
    * Example :
    *
-   * <pre><code class='java'>
-   * Optional&lt;String&gt; optional = Optional.absent();
+   * <pre><code class='java'> Optional.absent();
    *
-   * assertThat(optional).isAbsent();
-   * </code></pre>
+   * assertThat(optional).isAbsent();</code></pre>
    *
    * @return this {@link OptionalAssert} for assertions chaining.
    *
@@ -108,11 +105,9 @@ public class OptionalAssert<T> extends AbstractAssert<OptionalAssert<T>, Optiona
    * <p>
    * Example :
    *
-   * <pre><code class='java'>
-   * Optional&lt;String&gt; optional = Optional.of(&quot;value&quot;);
+   * <pre><code class='java'> Optional.of(&quot;value&quot;);
    *
-   * assertThat(optional).isPresent();
-   * </code></pre>
+   * assertThat(optional).isPresent();</code></pre>
    *
    * @return this {@link OptionalAssert} for assertions chaining.
    *
@@ -132,11 +127,9 @@ public class OptionalAssert<T> extends AbstractAssert<OptionalAssert<T>, Optiona
    * <p>
    * Example :
    *
-   * <pre><code class='java'>
-   * Optional&lt;Number&gt; optional = Optional.of(12L);
+   * <pre><code class='java'> Optional.of(12L);
    *
-   * assertThat(optional).extractingValue().isInstanceOf(Long.class);
-   * </code></pre>
+   * assertThat(optional).extractingValue().isInstanceOf(Long.class);</code></pre>
    *
    * </p>
    *
@@ -154,11 +147,9 @@ public class OptionalAssert<T> extends AbstractAssert<OptionalAssert<T>, Optiona
    * <p>
    * Example :
    *
-   * <pre><code class='java'>
-   * Optional&lt;String&gt; optional = Optional.of("Bill");
+   * <pre><code class='java'> Optional.of("Bill");
    *
-   * assertThat(optional).extractingCharSequence().startsWith("Bi");
-   * </code></pre>
+   * assertThat(optional).extractingCharSequence().startsWith("Bi");</code></pre>
    *
    * </p>
    *
