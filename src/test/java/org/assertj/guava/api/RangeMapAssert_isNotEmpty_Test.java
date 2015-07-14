@@ -39,7 +39,7 @@ public class RangeMapAssert_isNotEmpty_Test extends RangeMapAssertBaseTest {
 	try {
 	  assertThat(actual).isNotEmpty();
 	} catch (AssertionError e) {
-	  assertThat(e).hasMessage("\nExpecting actual not to be empty");
+	  assertThat(e).hasMessage(String.format("%nExpecting actual not to be empty"));
 	  return;
 	}
 	fail("Assertion error expected");

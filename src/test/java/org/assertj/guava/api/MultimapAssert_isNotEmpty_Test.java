@@ -39,8 +39,8 @@ public class MultimapAssert_isNotEmpty_Test extends MultimapAssertBaseTest {
     try {
       assertThat(actual).isNotEmpty();
     } catch (AssertionError e) {
-      assertThat(e).hasMessage("\n" +
-                               "Expecting actual not to be empty");
+      assertThat(e).hasMessage(String.format("%n" +
+                               "Expecting actual not to be empty"));
       return;
     }
     fail("Assertion error expected");
