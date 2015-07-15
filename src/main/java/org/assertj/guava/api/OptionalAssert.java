@@ -13,7 +13,6 @@
 package org.assertj.guava.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.assertj.guava.error.OptionalShouldBeAbsent.shouldBeAbsent;
 import static org.assertj.guava.error.OptionalShouldBePresent.shouldBePresent;
 import static org.assertj.guava.error.OptionalShouldBePresentWithValue.shouldBePresentWithValue;
