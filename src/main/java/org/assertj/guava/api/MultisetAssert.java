@@ -47,15 +47,15 @@ public class MultisetAssert<T> extends AbstractIterableAssert<MultisetAssert<T>,
   /**
    * Verifies the actual {@link Multiset} contains the given value exactly the given number of times.
    *
-   * @param expected the value which to expect
    * @param expectedCount the exact number of times the given value should appear in the set
+   * @param expected the value which to expect
    *
    * @return this {@link MultisetAssert} for fluent chaining
    *
    * @throws AssertionError if the actual {@link Multiset} is null
    * @throws AssertionError if the actual {@link Multiset} contains the given value a number of times different to the given count
    */
-  public MultisetAssert<T> containsTimes(T expected, int expectedCount) {
+  public MultisetAssert<T> contains(int expectedCount, T expected) {
     Objects.instance().assertNotNull(info, actual);
     checkArgument(expectedCount >= 0, "The expected count should not be negative.");
     int actualCount = actual.count(expected);
@@ -68,15 +68,15 @@ public class MultisetAssert<T> extends AbstractIterableAssert<MultisetAssert<T>,
   /**
    * Verifies the actual {@link Multiset} contains the given value exactly the given number of times.
    *
-   * @param expected the value which to expect
    * @param minimumCount the minimum number of times the given value should appear in the set
    *
+   * @param expected the value which to expect
    * @return this {@link MultisetAssert} for fluent chaining
    *
    * @throws AssertionError if the actual {@link Multiset} is null
    * @throws AssertionError if the actual {@link Multiset} contains the given value fewer times than the given count
    */
-  public MultisetAssert<T> containsAtLeastTimes(T expected, int minimumCount) {
+  public MultisetAssert<T> containsAtLeast(int minimumCount, T expected) {
     Objects.instance().assertNotNull(info, actual);
     checkArgument(minimumCount >= 0, "The minimum count should not be negative.");
     int actualCount = actual.count(expected);
@@ -89,15 +89,15 @@ public class MultisetAssert<T> extends AbstractIterableAssert<MultisetAssert<T>,
   /**
    * Verifies the actual {@link Multiset} contains the given value exactly the given number of times.
    *
-   * @param expected the value which to expect
    * @param maximumCount the maximum number of times the given value should appear in the set
    *
+   * @param expected the value which to expect
    * @return this {@link MultisetAssert} for fluent chaining
    *
    * @throws AssertionError if the actual {@link Multiset} is null
    * @throws AssertionError if the actual {@link Multiset} contains the given value more times than the given count
    */
-  public MultisetAssert<T> containsAtMostTimes(T expected, int maximumCount) {
+  public MultisetAssert<T> containsAtMost(int maximumCount, T expected) {
     Objects.instance().assertNotNull(info, actual);
     checkArgument(maximumCount >= 0, "The maximum count should not be negative.");
     int actualCount = actual.count(expected);

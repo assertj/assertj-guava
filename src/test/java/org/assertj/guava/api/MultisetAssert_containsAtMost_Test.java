@@ -19,7 +19,7 @@ import org.junit.Test;
 import static org.assertj.core.util.FailureMessages.actualIsNull;
 import static org.assertj.guava.api.Assertions.assertThat;
 
-public class MultisetAssert_containsTimes_Test extends BaseTest {
+public class MultisetAssert_containsAtMost_Test extends BaseTest {
 
   @Test
   public void should_fail_if_actual_is_null() {
@@ -28,7 +28,7 @@ public class MultisetAssert_containsTimes_Test extends BaseTest {
     // expect
     expectException(AssertionError.class, actualIsNull());
     // when
-    assertThat(actual).containsTimes("test", 1);
+    assertThat(actual).containsAtMost(1, "test");
   }
 
   @Test
@@ -36,28 +36,19 @@ public class MultisetAssert_containsTimes_Test extends BaseTest {
     // given
     Multiset<String> actual = HashMultiset.create();
     // expect
-    expectException(IllegalArgumentException.class, "The expected count should not be negative.");
+    expectException(IllegalArgumentException.class, "The maximum count should not be negative.");
     // when
-    assertThat(actual).containsTimes("test", -1);
+    assertThat(actual).containsAtMost(-1, "test");
   }
 
   @Test
-  public void should_fail_if_actual_contains_value_fewer_times_than_expected() {
+  public void should_pass_if_actual_contains_value_fewer_times_than_expected() {
     // given
     Multiset<String> actual = HashMultiset.create();
     actual.add("test", 2);
-    // expect
-    expectException(AssertionError.class, "%nExpecting:%n" +
-                                          "  <[\"test\", \"test\"]>%n" +
-                                          "to contain:%n" +
-                                          "  <\"test\">%n" +
-                                          "exactly:%n" +
-                                          "  <3>%n" +
-                                          "times, but was found:%n" +
-                                          "  <2>%n" +
-                                          "times.%n");
     // when
-    assertThat(actual).containsTimes("test", 3);
+    assertThat(actual).containsAtMost(3, "test");
+    // then pass
   }
 
   @Test
@@ -66,7 +57,7 @@ public class MultisetAssert_containsTimes_Test extends BaseTest {
     Multiset<String> actual = HashMultiset.create();
     actual.add("test", 2);
     // when
-    assertThat(actual).containsTimes("test", 2);
+    assertThat(actual).containsAtMost(2, "test");
     // then pass
   }
 
@@ -80,12 +71,12 @@ public class MultisetAssert_containsTimes_Test extends BaseTest {
                                           "  <[\"test\", \"test\"]>%n" +
                                           "to contain:%n" +
                                           "  <\"test\">%n" +
-                                          "exactly:%n" +
+                                          "at most:%n" +
                                           "  <1>%n" +
                                           "times, but was found:%n" +
                                           "  <2>%n" +
                                           "times.%n");
     // when
-    assertThat(actual).containsTimes("test", 1);
+    assertThat(actual).containsAtMost(1, "test");
   }
 }
