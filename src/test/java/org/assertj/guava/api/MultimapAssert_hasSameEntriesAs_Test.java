@@ -83,9 +83,7 @@ public class MultimapAssert_hasSameEntriesAs_Test extends MultimapAssertBaseTest
                                "  <{Lakers=[Kobe Bryant, Magic Johnson, Kareem Abdul Jabbar], Bulls=[Michael Jordan, Scottie Pippen, Derrick Rose], Spurs=[Tony Parker, Tim Duncan, Manu Ginobili]}>%n" +
                                "to contain only:%n" +
                                "  <{Lakers=[Kobe Bryant, Kareem Abdul Jabbar, Magic Johnson], Bulls=[Michael Jordan, Derrick Rose, Scottie Pippen]}>%n" +
-                               "elements not found:%n" +
-                               "  <[]>%n" +
-                               "and elements not expected:%n" +
+                               "but the following elements were unexpected:%n" +
                                "  <[Spurs=Manu Ginobili, Spurs=Tim Duncan, Spurs=Tony Parker]>%n"));
       // @format:on
       return;

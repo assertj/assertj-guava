@@ -26,38 +26,38 @@ public class RangeMapAssert_contains_Test extends RangeMapAssertBaseTest {
 
   @Test
   public void should_pass_if_actual_contains_given_entries() {
-	assertThat(actual).contains(entry(400, "violet"));
-	assertThat(actual).contains(entry(420, "violet"), entry(595, "orange"));
+    assertThat(actual).contains(entry(400, "violet"));
+    assertThat(actual).contains(entry(420, "violet"), entry(595, "orange"));
   }
 
   @Test
   public void should_fail_if_actual_is_null() {
-	expectException(AssertionError.class, actualIsNull());
-	actual = null;
-	assertThat(actual).contains(entry(400, "violet"));
+    expectException(AssertionError.class, actualIsNull());
+    actual = null;
+    assertThat(actual).contains(entry(400, "violet"));
   }
 
   @Test
   public void should_fail_if_entries_to_look_for_are_null() {
-	expectException(IllegalArgumentException.class, "The entries to look for should not be null");
-	assertThat(actual).contains((MapEntry<Integer, String>[]) null);
+    expectException(IllegalArgumentException.class, "The entries to look for should not be null");
+    assertThat(actual).contains((MapEntry<Integer, String>[]) null);
   }
 
   @Test
   public void should_fail_if_entries_to_look_for_are_empty() {
-	expectException(IllegalArgumentException.class, "The entries to look for should not be empty");
-	assertThat(actual).contains();
+    expectException(IllegalArgumentException.class, "The entries to look for should not be empty");
+    assertThat(actual).contains();
   }
 
   @Test
   public void should_fail_if_actual_does_not_contain_all_given_entries() {
-	try {
-	  assertThat(actual).contains(entry(400, "violet"), entry(100, "violet"), entry(500, "pink"));
-	} catch (AssertionError e) {
-	  // @format:off
+    try {
+      assertThat(actual).contains(entry(400, "violet"), entry(100, "violet"), entry(500, "pink"));
+    } catch (AssertionError e) {
+    // @format:off
 	  assertThat(e).hasMessage(format("%n"+
 	                           "Expecting:%n" +
-		                       " <[[380‥450)=violet, [450‥495)=blue, [495‥570)=green, [570‥590)=yellow, [590‥620)=orange, [620‥750)=red]>%n" +
+		                       " <[[380..450)=violet, [450..495)=blue, [495..570)=green, [570..590)=yellow, [590..620)=orange, [620..750)=red]>%n" +
 		                       "to contain:%n" +
 		                       " <[MapEntry[key=400, value='violet'],%n"+
 		                       "    MapEntry[key=100, value='violet'],%n"+
@@ -65,8 +65,8 @@ public class RangeMapAssert_contains_Test extends RangeMapAssertBaseTest {
 		                       "but could not find:%n" +
 		                       " <[MapEntry[key=100, value='violet'], MapEntry[key=500, value='pink']]>%n"));
 	  // @format:on
-	  return;
-	}
-	fail("Assertion error expected");
+      return;
+    }
+    fail("Assertion error expected");
   }
 }

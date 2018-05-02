@@ -41,8 +41,8 @@ import com.google.common.collect.SetMultimap;
 /**
  * Assertions for guava {@link Multimap}.
  *
- * @author @marcelfalliere
- * @author @miralak
+ * @author marcelfalliere
+ * @author miralak
  * @author Joel Costigliola
  */
 public class MultimapAssert<K, V> extends AbstractAssert<MultimapAssert<K, V>, Multimap<K, V>> {
@@ -65,7 +65,7 @@ public class MultimapAssert<K, V> extends AbstractAssert<MultimapAssert<K, V>, M
    * Example :
    *
    * <pre><code class='java'> Multimap&lt;String, String&gt; actual = ArrayListMultimap.create();
-   * 
+   *
    * actual.putAll("Lakers", newArrayList("Kobe Bryant", "Magic Johnson", "Kareem Abdul Jabbar"));
    * actual.putAll("Spurs", newArrayList("Tony Parker", "Tim Duncan", "Manu Ginobili"));
    * actual.putAll("Bulls", newArrayList("Michael Jordan", "Scottie Pippen", "Derrick Rose"));
@@ -208,7 +208,7 @@ public class MultimapAssert<K, V> extends AbstractAssert<MultimapAssert<K, V>, M
    * <pre><code class='java'> Multimap&lt;String, String&gt; actual = ArrayListMultimap.create();
    * nba.put("Bulls", "Derrick Rose");
    * nba.put("Bulls", "Joachim Noah");
-   * 
+   *
    * assertThat(nba).isNotEmpty();</code></pre>
    *
    * @throws AssertionError if the actual {@link Multimap} is {@code null}.
@@ -266,7 +266,7 @@ public class MultimapAssert<K, V> extends AbstractAssert<MultimapAssert<K, V>, M
    *
    * // assertion will pass as listMultimap and setMultimap have the same content
    * assertThat(listMultimap).hasSameEntriesAs(setMultimap);
-   * 
+   *
    * // this assertion FAILS even though both multimaps have the same content
    * assertThat(listMultimap).isEqualTo(setMultimap);</code></pre>
    *
@@ -301,7 +301,7 @@ public class MultimapAssert<K, V> extends AbstractAssert<MultimapAssert<K, V>, M
    *
    * // assertion will pass as other is a subset of actual.
    * assertThat(actual).containsAllEntriesOf(other);
-   * 
+   *
    * // this assertion FAILS as other does not contain "Spurs -&gt; "Manu Ginobili" and "Bulls" -&gt; "Derrick Rose"
    * assertThat(other).containsAllEntriesOf(actual);</code></pre>
    *
