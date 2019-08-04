@@ -33,7 +33,7 @@ import com.google.common.io.ByteSource;
  * @author Marcin Kwaczyński
  * @author Max Daniline
  */
-public class Assertions {
+public class Assertions implements InstanceOfAssertFactories {
 
   public static ByteSourceAssert assertThat(final ByteSource actual) {
     return new ByteSourceAssert(actual);
@@ -91,7 +91,7 @@ public class Assertions {
   }
 
   /**
-   * protected to avoid direct instanciation but allowing subclassing.
+   * protected to avoid direct instantiation but allowing subclassing.
    */
   protected Assertions() {
     // empty
