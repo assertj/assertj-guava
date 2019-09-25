@@ -40,6 +40,9 @@ import com.google.common.base.Optional;
 public class OptionalAssert<T> extends AbstractAssert<OptionalAssert<T>, Optional<T>> {
 
   @VisibleForTesting
+  Objects objects = Objects.instance();
+
+  @VisibleForTesting
   Failures failures = Failures.instance();
 
   protected OptionalAssert(final Optional<T> actual) {
@@ -71,7 +74,7 @@ public class OptionalAssert<T> extends AbstractAssert<OptionalAssert<T>, Optiona
     if (!actual.isPresent()) {
       throw failures.failure(info, shouldBePresentWithValue(value));
     }
-    if (!actual.get().equals(value)) {
+    if (!objects.getComparisonStrategy().areEqual(actual.get(), value)) {
       throw failures.failure(info, shouldBePresentWithValue(actual, value));
     }
     return this;

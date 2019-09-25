@@ -67,4 +67,14 @@ public class OptionalAssert_contains_Test extends BaseTest {
     // then
     // pass
   }
+
+  @Test
+  public void should_pass_when_actual_contains_expected_value_for_arrays() {
+    // given
+    final Optional<byte[]> testedOptional = Optional.of(new byte[]{ 1,2,3 });
+    // when
+    assertThat(testedOptional).contains(new byte[]{ 1,2,3 });
+    // then
+    // pass
+  }
 }
