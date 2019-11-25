@@ -213,11 +213,7 @@ import static org.assertj.core.api.InstanceOfAssertFactories.type;
 import static org.assertj.core.data.MapEntry.entry;
 import static org.assertj.core.util.Sets.newLinkedHashSet;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -239,6 +235,8 @@ public class Assertions_sync_with_InstanceOfAssertFactories_Test {
       RangeAssert.class,
       // There can be no RangeMap field factory with a base type.
       RangeMapAssert.class,
+      // There can be no RangeSet field factory with a base type.
+      RangeSetAssert.class,
   };
 
   private static final Class<?>[] METHOD_FACTORIES_IGNORED_TYPES = {

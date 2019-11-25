@@ -204,15 +204,11 @@
  */
 package org.assertj.guava.api;
 
+import com.google.common.collect.*;
 import org.assertj.core.api.Assert;
 import org.assertj.core.api.InstanceOfAssertFactory;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Range;
-import com.google.common.collect.RangeMap;
-import com.google.common.collect.Table;
 import com.google.common.io.ByteSource;
 
 /**
@@ -284,7 +280,7 @@ public interface InstanceOfAssertFactories {
    */
   @SuppressWarnings({ "rawtypes", "unused" }) // rawtypes: using Class instance, unused: parameter needed for type inference
   static <C extends Comparable<C>> InstanceOfAssertFactory<Range, RangeAssert<C>> range(Class<C> comparableType) {
-    return new InstanceOfAssertFactory<>(Range.class, Assertions::<C> assertThat);
+    return new InstanceOfAssertFactory<>(Range.class, Assertions::<C>assertThat);
   }
 
   /**
@@ -300,6 +296,18 @@ public interface InstanceOfAssertFactories {
   static <K extends Comparable<K>, V> InstanceOfAssertFactory<RangeMap, RangeMapAssert<K, V>> rangeMap(Class<K> keyType,
                                                                                                        Class<V> valueType) {
     return new InstanceOfAssertFactory<>(RangeMap.class, Assertions::<K, V> assertThat);
+  }
+
+  /**
+   * {@link InstanceOfAssertFactory} for a {@link RangeSet}.
+   *
+   * @param comparableType the comparable type instance.
+   * @param <T> the {@code Comparable} type.
+   * @return the factory instance
+   */
+  @SuppressWarnings({ "rawtypes", "unused" }) // rawtypes: using Class instance, unused: parameter needed for type inference
+  static <T extends Comparable<T>> InstanceOfAssertFactory<RangeSet, RangeSetAssert<T>> rangeSet(Class<T> comparableType) {
+    return new InstanceOfAssertFactory<>(RangeSet.class, Assertions::<T>assertThat);
   }
 
   /**
