@@ -260,8 +260,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * @throws AssertionError if the actual {@link com.google.common.collect.Range} is {@code null}.
    * @throws AssertionError if the actual {@link com.google.common.collect.Range} does not contain the given values.
    */
-  @SafeVarargs
-  public final RangeAssert<T> contains(final T... values) {
+  public RangeAssert<T> contains(final T... values) {
     Objects.instance().assertNotNull(info, actual);
     throwIllegalArgumentExceptionIfTrue(values == null, "The values to look for should not be null");
 
@@ -296,8 +295,7 @@ public class RangeAssert<T extends Comparable<T>> extends AbstractAssert<RangeAs
    * @throws AssertionError if the actual {@link com.google.common.collect.Range} is {@code null}.
    * @throws AssertionError if the actual {@link com.google.common.collect.Range} contains the given values.
    */
-  @SafeVarargs
-  public final RangeAssert<T> doesNotContain(final T... values) {
+  public RangeAssert<T> doesNotContain(final T... values) {
     Objects.instance().assertNotNull(info, actual);
 
     final List<T> valuesFound = newArrayList();

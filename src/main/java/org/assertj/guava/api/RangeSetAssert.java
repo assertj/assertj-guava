@@ -276,8 +276,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} does not contain the given {@code elements}.
    * @throws IllegalArgumentException if elements are null or elements are empty while actual is not empty.
    */
-  @SafeVarargs
-  public final RangeSetAssert<T> contains(final T... elements) {
+  public RangeSetAssert<T> contains(final T... elements) {
     rangeSets.assertContains(info, actual, elements);
     return myself;
   }
@@ -329,8 +328,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} does not contain at least one of the given {@code elements}.
    * @throws IllegalArgumentException if elements are null or elements are empty while actual is not empty.
    */
-  @SafeVarargs
-  public final RangeSetAssert<T> containsAnyOf(final T... elements) {
+  public RangeSetAssert<T> containsAnyOf(final T... elements) {
     rangeSets.assertContainsAnyOf(info, actual, elements);
     return myself;
   }
@@ -382,8 +380,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} contains the given {@code elements}.
    * @throws IllegalArgumentException if elements are null or elements are empty.
    */
-  @SafeVarargs
-  public final RangeSetAssert<T> doesNotContain(final T... elements) {
+  public RangeSetAssert<T> doesNotContain(final T... elements) {
     rangeSets.assertDoesNotContain(info, actual, elements);
     return myself;
   }
@@ -500,8 +497,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} does not intersect all the given ranges.
    * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  @SafeVarargs
-  public final RangeSetAssert<T> intersects(final Range<T>... ranges) {
+  public RangeSetAssert<T> intersects(final Range<T>... ranges) {
     rangeSets.assertIntersects(info, actual, ranges);
     return myself;
   }
@@ -583,8 +579,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} does not intersect any of the given ranges.
    * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  @SafeVarargs
-  public final RangeSetAssert<T> intersectsAnyOf(final Range<T>... ranges) {
+  public RangeSetAssert<T> intersectsAnyOf(final Range<T>... ranges) {
     rangeSets.assertIntersectsAnyOf(info, actual, ranges);
     return myself;
   }
@@ -668,8 +663,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} intersects the given ranges.
    * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  @SafeVarargs
-  public final RangeSetAssert<T> doesNotIntersect(final Range<T>... ranges) {
+  public RangeSetAssert<T> doesNotIntersect(final Range<T>... ranges) {
     rangeSets.assertDoesNotIntersect(info, actual, ranges);
     return myself;
   }
@@ -751,8 +745,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} does not enclose the given ranges.
    * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  @SafeVarargs
-  public final RangeSetAssert<T> encloses(final Range<T>... ranges) {
+  public RangeSetAssert<T> encloses(final Range<T>... ranges) {
     rangeSets.assertEncloses(info, actual, ranges);
     return myself;
   }
@@ -834,8 +827,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} does not enclose at least one of the given ranges.
    * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  @SafeVarargs
-  public final RangeSetAssert<T> enclosesAnyOf(final Range<T>... ranges) {
+  public RangeSetAssert<T> enclosesAnyOf(final Range<T>... ranges) {
     rangeSets.assertEnclosesAnyOf(info, actual, ranges);
     return myself;
   }
@@ -923,8 +915,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} encloses any of the given ranges.
    * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  @SafeVarargs
-  public final RangeSetAssert<T> doesNotEnclose(final Range<T>... ranges) {
+  public RangeSetAssert<T> doesNotEnclose(final Range<T>... ranges) {
     rangeSets.assertDoesNotEnclose(info, actual, ranges);
     return myself;
   }
