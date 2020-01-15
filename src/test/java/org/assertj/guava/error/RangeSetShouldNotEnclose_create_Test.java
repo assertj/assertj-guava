@@ -202,159 +202,45 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.assertj.guava.api;
+package org.assertj.guava.error;
 
 import static com.google.common.collect.ImmutableRangeSet.of;
 import static com.google.common.collect.Range.closed;
-import static com.google.common.collect.Range.closedOpen;
 import static com.google.common.collect.Range.open;
-import static com.google.common.collect.TreeRangeSet.create;
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptySet;
+import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsEmpty;
-import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsNull;
-import static org.assertj.core.util.FailureMessages.actualIsNull;
-import static org.assertj.guava.api.Assertions.assertThat;
-import static org.assertj.guava.error.RangeSetShouldIntersect.shouldIntersect;
-import static org.assertj.guava.internal.ErrorMessages.rangeSetValuesToLookForIsEmpty;
-import static org.assertj.guava.internal.ErrorMessages.rangeSetValuesToLookForIsNull;
+import static org.assertj.core.util.Arrays.array;
+import static org.assertj.core.util.IterableUtil.iterable;
+import static org.assertj.guava.error.RangeSetShouldNotEnclose.shouldNotEnclose;
 
-import java.util.List;
-
+import org.assertj.core.description.TextDescription;
+import org.assertj.core.error.ErrorMessageFactory;
+import org.assertj.core.presentation.StandardRepresentation;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.ImmutableRangeSet;
-import com.google.common.collect.Range;
-import com.google.common.collect.RangeSet;
-
 /**
- * Tests for <code>{@link RangeSetAssert#intersectsAll(RangeSet)}</code> and 
- * <code>{@link RangeSetAssert#intersectsAll(Iterable)}</code>.
+ * Tests for
+ * <code>{@link RangeSetShouldNotEnclose#create(org.assertj.core.description.Description, org.assertj.core.presentation.Representation)}</code>
  *
- * @author Ilya Koshaleu
+ * @author Ilya_Koshaleu
  */
-class RangeSetAssert_intersectsAll_Test {
+public class RangeSetShouldNotEnclose_create_Test {
 
   @Test
-  void should_fail_if_the_given_set_if_null() {
+  void should_create_error_message() {
     // GIVEN
-    RangeSet<Integer> actual = null;
+    ErrorMessageFactory factory = shouldNotEnclose(of(closed(0, 10)),
+                                                   array(closed(2, 5), open(-5, 5)),
+                                                   iterable(closed(2, 5)));
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).intersectsAll(emptySet()));
+    String message = factory.create(new TextDescription("Test"), StandardRepresentation.STANDARD_REPRESENTATION);
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class)
-                         .hasMessage(actualIsNull());
-  }
-
-  @Test
-  void should_fail_if_range_set_is_null() {
-    // GIVEN
-    RangeSet<Integer> actual = create();
-    RangeSet<Integer> expected = null;
-    // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).intersectsAll(expected));
-    // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                         .hasMessage(rangeSetValuesToLookForIsNull());
-  }
-
-  @Test
-  void should_fail_if_range_is_null() {
-    // GIVEN
-    RangeSet<Integer> actual = create();
-    Iterable<Range<Integer>> expected = null;
-    // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).intersectsAll(expected));
-    // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                         .hasMessage(iterableValuesToLookForIsNull());
-  }
-
-  @Test
-  void should_pass_if_both_expected_range_and_actual_are_empty() {
-    // GIVEN
-    RangeSet<Integer> actual = create();
-    // THEN
-    assertThat(actual).intersectsAll(emptySet());
-  }
-
-  @Test
-  void should_pass_if_both_expected_range_set_and_actual_are_empty() {
-    // GIVEN
-    RangeSet<Integer> actual = create();
-    // THEN
-    assertThat(actual).intersectsAll(of());
-  }
-
-  @Test
-  void should_fail_if_expected_range_is_empty() {
-    // GIVEN
-    RangeSet<Integer> actual = of(closed(0, 1));
-    // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).intersectsAll(emptySet()));
-    // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                         .hasMessage(iterableValuesToLookForIsEmpty());
-  }
-
-  @Test
-  void should_fail_if_expected_range_set_is_empty() {
-    // GIVEN
-    RangeSet<Integer> actual = of(closed(0, 1));
-    // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).intersectsAll(of()));
-    // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                         .hasMessage(rangeSetValuesToLookForIsEmpty());
-  }
-
-  @Test
-  void should_pass_if_the_given_set_intersects_range() {
-    // GIVEN
-    RangeSet<Integer> actual = of(closed(0, 100));
-    // THEN
-    assertThat(actual).intersectsAll(asList(closed(10, 15), open(30, 45)));
-  }
-
-  @Test
-  void should_pass_if_the_given_set_intersects_range_set() {
-    // GIVEN
-    RangeSet<Integer> actual = of(closed(0, 100));
-    // THEN
-    assertThat(actual).intersectsAll(of(closed(50, 200)));
-  }
-
-  @Test
-  void should_fail_if_the_given_set_does_not_intersect_range_set() {
-    // GIVEN
-    RangeSet<Integer> actual = of(closed(0, 100));
-    RangeSet<Integer> expected = ImmutableRangeSet.<Integer> builder()
-                                                  .add(closed(101, 120))
-                                                  .add(closedOpen(-100, 0)).build();
-    // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).intersectsAll(expected));
-    // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class)
-                         .hasMessage(shouldIntersect(actual, expected, asList(closedOpen(-100, 0),
-                                                                              closed(101, 120)))
-                                                                                                .create());
-  }
-
-  @Test
-  void should_fail_if_the_given_set_does_not_intersect_range() {
-    // GIVEN
-    RangeSet<Integer> actual = of(closed(0, 100));
-    List<Range<Integer>> expected = asList(closed(50, 75),
-                                           open(105, 120),
-                                           closedOpen(-100, 0));
-    // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).intersectsAll(expected));
-    // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class)
-                         .hasMessage(shouldIntersect(actual, expected, asList(open(105, 120),
-                                                                              closedOpen(-100, 0)))
-                                                                                                   .create());
+    assertThat(message).isEqualTo(format("[Test] %n" +
+                                         "Expecting:%n" +
+                                         "  <[[0..10]]>%n" +
+                                         "not to enclose%n" +
+                                         "  <[[2..5], (-5..5)]>%n" +
+                                         "but it encloses%n" +
+                                         "  <[[2..5]]>%n"));
   }
 }

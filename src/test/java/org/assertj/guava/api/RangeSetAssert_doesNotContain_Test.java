@@ -246,7 +246,8 @@ class RangeSetAssert_doesNotContain_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotContain(elements));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsNull());
   }
 
   @Test
@@ -256,7 +257,8 @@ class RangeSetAssert_doesNotContain_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotContain());
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsEmpty());
   }
 
   @Test

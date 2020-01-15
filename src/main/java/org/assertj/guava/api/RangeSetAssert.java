@@ -235,15 +235,13 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'> 
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
    * assertThat(rangeSet).hasSize(3);</code></pre>
-   * </p> 
    * 
    * @param size expected amount of disconnected {@code Range} elements.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -256,158 +254,146 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   }
 
   /**
-   * Verifies that the given {@code RangeSet} contains the given elements.
+   * Verifies that the given {@code RangeSet} contains the given ranges.
    * <p>
    * Example:
    *
-   * <pre><code class='java'> 
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    * 
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    * 
    * assertThat(rangeSet).contains(50, 270, 550);</code></pre>
-   * </p>
    * 
-   * @param elements the elements to look for in actual {@code RangeSet}.
+   * @param ranges the ranges to look for in actual {@code RangeSet}.
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not contain the given {@code elements}.
-   * @throws IllegalArgumentException if elements are null or elements are empty while actual is not empty.
+   * @throws AssertionError if the actual {@code RangeSet} does not contain the given {@code ranges}.
+   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  public RangeSetAssert<T> contains(final T... elements) {
-    rangeSets.assertContains(info, actual, elements);
+  public RangeSetAssert<T> contains(final T... ranges) {
+    rangeSets.assertContains(info, actual, ranges);
     return myself;
   }
 
   /**
-   * Verifies that the given {@code RangeSet} contains all the given elements.
+   * Verifies that the given {@code RangeSet} contains all the given ranges.
    * <p>
    * Example:
    *
-   * <pre><code class='java'> 
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
    * assertThat(rangeSet).containsAll(Arrays.asList(50, 270, 550));</code></pre>
-   * </p> 
    * 
-   * @param elements the elements to look for in actual {@code RangeSet}.
+   * @param ranges the ranges to look for in actual {@code RangeSet}.
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not contain all the given {@code elements}.
-   * @throws IllegalArgumentException if elements are null or elements are empty while actual is not empty.
+   * @throws AssertionError if the actual {@code RangeSet} does not contain all the given {@code ranges}.
+   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  public RangeSetAssert<T> containsAll(final Iterable<T> elements) {
-    rangeSets.assertContainsAll(info, actual, elements);
+  public RangeSetAssert<T> containsAll(final Iterable<T> ranges) {
+    rangeSets.assertContainsAll(info, actual, ranges);
     return myself;
   }
 
   /**
-   * Verifies that the given {@code RangeSet} contains at least one of the given elements.
+   * Verifies that the given {@code RangeSet} contains at least one of the given ranges.
    * <p>
    * Example:
    *
-   * <pre><code class='java'> 
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
    * assertThat(rangeSet).containsAnyOf(150, 250, 700);</code></pre>
-   * </p>
    * 
-   * @param elements the elements to look for in actual {@code RangeSet}.
+   * @param ranges the ranges to look for in actual {@code RangeSet}.
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not contain at least one of the given {@code elements}.
-   * @throws IllegalArgumentException if elements are null or elements are empty while actual is not empty.
+   * @throws AssertionError if the actual {@code RangeSet} does not contain at least one of the given {@code ranges}.
+   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  public RangeSetAssert<T> containsAnyOf(final T... elements) {
-    rangeSets.assertContainsAnyOf(info, actual, elements);
+  public RangeSetAssert<T> containsAnyOf(final T... ranges) {
+    rangeSets.assertContainsAnyOf(info, actual, ranges);
     return myself;
   }
 
   /**
-   * Verifies that the given {@code RangeSet} contains at least one of the given elements.
+   * Verifies that the given {@code RangeSet} contains at least one of the given ranges.
    * <p>
    * Example:
    *
-   * <pre><code class='java'> 
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
-   * assertThat(rangeSet).containsAnyElementsOf(Arrays.asList(150, 250, 700));</code></pre>
-   * </p>
+   * assertThat(rangeSet).containsAnyRangesOf(Arrays.asList(150, 250, 700));</code></pre>
    *
-   * @param elements the elements to look for in actual {@code RangeSet}.
+   * @param ranges the ranges to look for in actual {@code RangeSet}.
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not contain at least one of the given {@code elements}.
-   * @throws IllegalArgumentException if elements are null or elements are empty while actual is not empty.
+   * @throws AssertionError if the actual {@code RangeSet} does not contain at least one of the given {@code ranges}.
+   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  public RangeSetAssert<T> containsAnyElementsOf(final Iterable<T> elements) {
-    rangeSets.assertContainsAnyElementsOf(info, actual, elements);
+  public RangeSetAssert<T> containsAnyRangesOf(final Iterable<T> ranges) {
+    rangeSets.assertContainsAnyRangesOf(info, actual, ranges);
     return myself;
   }
 
   /**
-   * Verifies that the given {@code RangeSet} does not contain the given elements.
+   * Verifies that the given {@code RangeSet} does not contain any of the given ranges.
    * <p>
    * Example:
    *
-   * <pre><code class='java'> 
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    * 
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    * 
    * assertThat(rangeSet).doesNotContain(150, 320, 650);</code></pre>
-   * </p>
    * 
-   * @param elements the elements that should not be present in actual {@code RangeSet}
+   * @param ranges the ranges that should not be present in actual {@code RangeSet}
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} contains the given {@code elements}.
-   * @throws IllegalArgumentException if elements are null or elements are empty.
+   * @throws AssertionError if the actual {@code RangeSet} contains any of the given {@code ranges}.
+   * @throws IllegalArgumentException if ranges are null or ranges are empty.
    */
-  public RangeSetAssert<T> doesNotContain(final T... elements) {
-    rangeSets.assertDoesNotContain(info, actual, elements);
+  public RangeSetAssert<T> doesNotContain(final T... ranges) {
+    rangeSets.assertDoesNotContain(info, actual, ranges);
     return myself;
   }
 
   /**
-   * Verifies that the given {@code RangeSet} does not contain the given elements.
+   * Verifies that the given {@code RangeSet} does not contain any of the given ranges.
    * <p>
    * Example:
    *
-   * <pre><code class='java'> 
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
    * assertThat(rangeSet).doesNotContain(Arrays.asList(150, 320, 650));</code></pre>
-   * </p>
    *
-   * @param elements the elements that should not be present in actual {@code RangeSet}
+   * @param ranges the ranges that should not be present in actual {@code RangeSet}
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} contains the given {@code elements}.
-   * @throws IllegalArgumentException if elements are null or elements are empty.
+   * @throws AssertionError if the actual {@code RangeSet} contains any of the given {@code ranges}.
+   * @throws IllegalArgumentException if ranges are null or ranges are empty.
    */
-  public RangeSetAssert<T> doesNotContainAll(final Iterable<T> elements) {
-    rangeSets.assertDoesNotContainAll(info, actual, elements);
+  public RangeSetAssert<T> doesNotContainAll(final Iterable<T> ranges) {
+    rangeSets.assertDoesNotContainAll(info, actual, ranges);
     return myself;
   }
 
@@ -416,11 +402,9 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    * 
    * assertThat(rangeSet).isEmpty();</code></pre>
-   * </p>
    * 
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
@@ -436,15 +420,13 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    * 
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
    * assertThat(rangeSet).isNotEmpty();</code></pre>
-   * </p>
    * 
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
@@ -460,11 +442,9 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'> 
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * assertThat(rangeSet).isNullOrEmpty();</code></pre>
-   * </p>
    * 
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is not {@code null} or not empty.
@@ -475,12 +455,11 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   }
 
   /**
-   * Verifies that the given {@code RangeSet} intersects the given ranges.
+   * Verifies that the given {@code RangeSet} intersects all the given ranges.
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
@@ -489,7 +468,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * assertThat(rangeSet).intersects(Range.closed(50, 150),
    *                                 Range.openClosed(170, 220),
    *                                 Range.open(520, 570));</code></pre>
-   * </p>
    *
    * @param ranges the ranges to check whether they intersect the given {@code RangeSet}.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -503,19 +481,17 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   }
 
   /**
-   * Verifies that the given {@code RangeSet} intersects the given range set.
+   * Verifies that the given {@code RangeSet} intersects all the given range set.
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
    * assertThat(rangeSet).intersectsAll(ImmutableRangeSet.of(Range.closed(50, 250)));</code></pre>
-   * </p>
    * 
    * @param rangeSet the range set to check whether it intersects the actual {@code RangeSet}.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -533,8 +509,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
@@ -543,7 +518,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * assertThat(rangeSet).intersectsAll(Arrays.asList(Range.closed(50, 150),    
    *                                                  Range.openClosed(170, 220),
    *                                                  Range.open(520, 570)));</code></pre>
-   * </p>
    *
    * @param ranges the ranges to check whether they all intersect the given {@code RangeSet}.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -561,8 +535,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
@@ -571,7 +544,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * assertThat(rangeSet).intersectsAnyOf(Range.closed(50, 150),
    *                                      Range.open(170, 190),
    *                                      Range.open(600, 670));</code></pre>
-   * </p>
    * 
    * @param ranges the ranges to check whether the actual {@code RangeSet} intersects at least one of them.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -589,17 +561,15 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
-   * assertThat(rangeSet).intersectsAnyElementsOf(Arrays.asList(Range.closed(50, 150),    
+   * assertThat(rangeSet).intersectsAnyRangesOf(Arrays.asList(Range.closed(50, 150),
    *                                                            Range.open(170, 190),
    *                                                            Range.open(600, 670));</code></pre>
-   * </p>
    *
    * @param ranges the ranges to check whether the actual {@code RangeSet} intersects at least one of them.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -607,8 +577,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} does not intersect any of the given ranges.
    * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  public RangeSetAssert<T> intersectsAnyElementsOf(final Iterable<Range<T>> ranges) {
-    rangeSets.assertIntersectsAnyElementsOf(info, actual, ranges);
+  public RangeSetAssert<T> intersectsAnyRangesOf(final Iterable<Range<T>> ranges) {
+    rangeSets.assertIntersectsAnyRangesOf(info, actual, ranges);
     return myself;
   }
 
@@ -617,15 +587,13 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
-   * assertThat(rangeSet).intersectsAnyElementsOf(ImmutableRangeSet.of(Range.close(50, 150)));</code></pre>
-   * </p>
+   * assertThat(rangeSet).intersectsAnyRangesOf(ImmutableRangeSet.of(Range.close(50, 150)));</code></pre>
    *
    * @param rangeSet the range set with ranges to check whether the actual {@code RangeSet} intersects at least one of
    *                 them.
@@ -635,8 +603,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    *         set.
    * @throws IllegalArgumentException if range set is null or it is empty while actual is not empty.
    */
-  public RangeSetAssert<T> intersectsAnyElementsOf(final RangeSet<T> rangeSet) {
-    rangeSets.assertIntersectsAnyElementsOf(info, actual, rangeSet);
+  public RangeSetAssert<T> intersectsAnyRangesOf(final RangeSet<T> rangeSet) {
+    rangeSets.assertIntersectsAnyRangesOf(info, actual, rangeSet);
     return myself;
   }
 
@@ -645,8 +613,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
@@ -655,7 +622,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * assertThat(rangeSet).doesNotIntersect(Range.closed(120, 150),
    *                                       Range.open(302, 490),
    *                                       Range.open(600, 670));</code></pre>
-   * </p>
    *
    * @param ranges the ranges to check whether the actual {@code RangeSet} does not intersect them.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -673,15 +639,13 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
-   * assertThat(rangeSet).doesNotIntersect(ImmutableRangeSet.of(Range.close(120, 170)));</code></pre>
-   * </p>
+   * assertThat(rangeSet).doesNotIntersectAnyRangeFrom(ImmutableRangeSet.of(Range.close(120, 170)));</code></pre>
    *
    * @param rangeSet the range set to check whether the actual {@code RangeSet} does not intersect ranges from it.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -689,8 +653,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} intersects the ranges from the given range set.
    * @throws IllegalArgumentException if range set is null or it is empty while actual is not empty.
    */
-  public RangeSetAssert<T> doesNotIntersectAll(final RangeSet<T> rangeSet) {
-    rangeSets.assertDoesNotIntersectAll(info, actual, rangeSet);
+  public RangeSetAssert<T> doesNotIntersectAnyRangeFrom(final RangeSet<T> rangeSet) {
+    rangeSets.assertDoesNotIntersectAnyRangeFrom(info, actual, rangeSet);
     return myself;
   }
 
@@ -699,17 +663,15 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
-   * assertThat(rangeSet).doesNotIntersectAll(Arrays.asList(Range.closed(120, 150),
-   *                                                        Range.open(302, 490),
-   *                                                        Range.open(600, 670));</code></pre>
-   * </p>
+   * assertThat(rangeSet).doesNotIntersectAnyRangeFrom(Arrays.asList(Range.closed(120, 150),
+   *                                                                 Range.open(302, 490),
+   *                                                                 Range.open(600, 670));</code></pre>
    *
    * @param ranges the ranges to check whether the actual {@code RangeSet} does not intersect them.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -717,8 +679,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} intersects all the given ranges.
    * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  public RangeSetAssert<T> doesNotIntersectAll(final Iterable<Range<T>> ranges) {
-    rangeSets.assertDoesNotIntersectAll(info, actual, ranges);
+  public RangeSetAssert<T> doesNotIntersectAnyRangeFrom(final Iterable<Range<T>> ranges) {
+    rangeSets.assertDoesNotIntersectAnyRangeFrom(info, actual, ranges);
     return myself;
   }
 
@@ -727,8 +689,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    * 
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    * 
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
@@ -737,7 +698,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * assertThat(rangeSet).encloses(Range.closed(0, 10),
    *                               Range.open(50, 60),
    *                               Range.open(90, 100));</code></pre>
-   * </p>
    * 
    * @param ranges the ranges to check whether the actual {@code RangeSet} encloses them.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -755,8 +715,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
@@ -765,7 +724,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * assertThat(rangeSet).enclosesAll(Arrays.asList(Range.closed(0, 10),
    *                                                Range.open(50, 60),
    *                                                Range.open(90, 100)));</code></pre>
-   * </p>
    *
    * @param ranges the ranges to check whether the actual {@code RangeSet} encloses all of them.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -783,15 +741,13 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
    * assertThat(rangeSet).enclosesAll(ImmutableRangeSet.of(Range.closed(0, 50));</code></pre>
-   * </p>
    *
    * @param rangeSet the range set to check whether the actual {@code RangeSet} encloses all range from it.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -805,12 +761,11 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   }
 
   /**
-   * Verifies that the given {@code RangeSet} encloses at least one range of the given ranges.
+   * Verifies that the given {@code RangeSet} encloses at least one of the given ranges.
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
@@ -819,7 +774,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * assertThat(rangeSet).enclosesAnyOf(Range.closed(-10, 10),
    *                                    Range.open(150, 260),
    *                                    Range.open(290, 296));</code></pre>
-   * </p>
    *
    * @param ranges the ranges to check whether the actual {@code RangeSet} encloses at least one of them.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -837,17 +791,15 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
-   * assertThat(rangeSet).enclosesAnyElementsOf(Arrays.asList(Range.closed(-10, 10),
+   * assertThat(rangeSet).enclosesAnyRangesOf(Arrays.asList(Range.closed(-10, 10),
    *                                                          Range.open(150, 260),
    *                                                          Range.open(290, 296)));</code></pre>
-   * </p>
    *
    * @param ranges the ranges to check whether the actual {@code RangeSet} encloses at least one of them.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -855,8 +807,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} does not enclose at least one of the given ranges.
    * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  public RangeSetAssert<T> enclosesAnyElementsOf(final Iterable<Range<T>> ranges) {
-    rangeSets.assertEnclosesAnyElementsOf(info, actual, ranges);
+  public RangeSetAssert<T> enclosesAnyRangesOf(final Iterable<Range<T>> ranges) {
+    rangeSets.assertEnclosesAnyRangesOf(info, actual, ranges);
     return myself;
   }
 
@@ -865,8 +817,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
@@ -879,7 +830,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * enclosedSet.add(Range.open(290, 296));
    * 
    * assertThat(rangeSet).enclosesAll(enclosedSet);</code></pre>
-   * </p>
    *
    * @param rangeSet the range set to check whether the actual {@code RangeSet} encloses at least one range from it.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -887,8 +837,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} does not enclose at least one range from the given range set.
    * @throws IllegalArgumentException if range set is null or it is empty while actual is not empty.
    */
-  public RangeSetAssert<T> enclosesAnyElementsOf(final RangeSet<T> rangeSet) {
-    rangeSets.assertEnclosesAnyElementsOf(info, actual, rangeSet);
+  public RangeSetAssert<T> enclosesAnyRangesOf(final RangeSet<T> rangeSet) {
+    rangeSets.assertEnclosesAnyRangesOf(info, actual, rangeSet);
     return myself;
   }
 
@@ -897,8 +847,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
@@ -907,7 +856,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * assertThat(rangeSet).doesNotEnclose(Range.closed(-10, 10),
    *                                     Range.open(150, 160),
    *                                     Range.open(590, 700));</code></pre>
-   * </p>
    *
    * @param ranges the ranges to check whether the actual {@code RangeSet} does not enclose them.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -925,17 +873,15 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
    * rangeSet.add(Range.closed(500, 600));
    *
-   * assertThat(rangeSet).doesNotEncloseAnyElementsOf(Arrays.asList(Range.closed(-10, 10),
-   *                                                                Range.open(150, 160),
-   *                                                                Range.open(590, 700));</code></pre>
-   * </p>
+   * assertThat(rangeSet).doesNotEncloseAnyRangesOf(Arrays.asList(Range.closed(-10, 10),
+   *                                                              Range.open(150, 160),
+   *                                                              Range.open(590, 700));</code></pre>
    *
    * @param ranges the ranges to check whether the actual {@code RangeSet} does not enclose any of them.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -943,8 +889,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} encloses any of the given ranges.
    * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
    */
-  public RangeSetAssert<T> doesNotEncloseAll(final Iterable<Range<T>> ranges) {
-    rangeSets.assertDoesNotEncloseAll(info, actual, ranges);
+  public RangeSetAssert<T> doesNotEncloseAnyRangesOf(final Iterable<Range<T>> ranges) {
+    rangeSets.doesNotEncloseAnyRangesOf(info, actual, ranges);
     return myself;
   }
 
@@ -953,8 +899,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * <p>
    * Example:
    *
-   * <pre><code class='java'>
-   * RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
+   * <pre><code class='java'> RangeSet&lt;Integer&gt; rangeSet = TreeRangeSet.create();
    *
    * rangeSet.add(Range.closed(0, 100));
    * rangeSet.add(Range.closed(200, 300));
@@ -966,8 +911,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * enclosedSet.add(Range.open(150, 360));
    * enclosedSet.add(Range.open(590, 690));
    *
-   * assertThat(rangeSet).doesNotEncloseAnyElementsOf(enclosedSet);</code></pre>
-   * </p>
+   * assertThat(rangeSet).doesNotEncloseAnyRangesOf(enclosedSet);</code></pre>
    *
    * @param rangeSet the range set to check whether the actual {@code RangeSet} does not enclose any ranges from it.
    * @return this {@link RangeSetAssert} for assertions chaining.
@@ -975,8 +919,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} encloses any range from the given range set.
    * @throws IllegalArgumentException if range set is null or it is empty while actual is not empty.
    */
-  public RangeSetAssert<T> doesNotEncloseAll(final RangeSet<T> rangeSet) {
-    rangeSets.assertDoesNotEncloseAll(info, actual, rangeSet);
+  public RangeSetAssert<T> doesNotEncloseAnyRangesOf(final RangeSet<T> rangeSet) {
+    rangeSets.doesNotEncloseAnyRangesOf(info, actual, rangeSet);
     return myself;
   }
 }

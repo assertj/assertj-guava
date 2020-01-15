@@ -232,7 +232,8 @@ class RangeSetAssert_encloses_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).encloses(closed(0, 1)));
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(actualIsNull());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(actualIsNull());
   }
 
   @Test
@@ -243,7 +244,8 @@ class RangeSetAssert_encloses_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).encloses(expected));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsNull());
   }
 
   @Test
@@ -261,7 +263,8 @@ class RangeSetAssert_encloses_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).encloses());
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsEmpty());
   }
 
   @Test

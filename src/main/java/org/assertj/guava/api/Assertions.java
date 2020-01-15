@@ -204,10 +204,15 @@
  */
 package org.assertj.guava.api;
 
-import com.google.common.collect.*;
 import org.assertj.core.data.MapEntry;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Range;
+import com.google.common.collect.RangeMap;
+import com.google.common.collect.RangeSet;
+import com.google.common.collect.Table;
 import com.google.common.io.ByteSource;
 
 /**

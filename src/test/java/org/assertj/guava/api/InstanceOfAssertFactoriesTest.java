@@ -206,14 +206,30 @@ package org.assertj.guava.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
-import static org.assertj.guava.api.InstanceOfAssertFactories.*;
+import static org.assertj.guava.api.InstanceOfAssertFactories.BYTE_SOURCE;
+import static org.assertj.guava.api.InstanceOfAssertFactories.MULTIMAP;
+import static org.assertj.guava.api.InstanceOfAssertFactories.MULTISET;
+import static org.assertj.guava.api.InstanceOfAssertFactories.OPTIONAL;
+import static org.assertj.guava.api.InstanceOfAssertFactories.TABLE;
+import static org.assertj.guava.api.InstanceOfAssertFactories.multimap;
+import static org.assertj.guava.api.InstanceOfAssertFactories.multiset;
+import static org.assertj.guava.api.InstanceOfAssertFactories.optional;
+import static org.assertj.guava.api.InstanceOfAssertFactories.range;
+import static org.assertj.guava.api.InstanceOfAssertFactories.rangeMap;
+import static org.assertj.guava.api.InstanceOfAssertFactories.rangeSet;
+import static org.assertj.guava.api.InstanceOfAssertFactories.table;
 
 import java.io.IOException;
 
 import org.junit.Test;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.ImmutableRangeMap;
+import com.google.common.collect.ImmutableRangeSet;
+import com.google.common.collect.ImmutableTable;
+import com.google.common.collect.Range;
 import com.google.common.io.ByteSource;
 
 /**

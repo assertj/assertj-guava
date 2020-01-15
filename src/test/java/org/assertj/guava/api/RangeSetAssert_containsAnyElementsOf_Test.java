@@ -224,7 +224,7 @@ import org.junit.jupiter.api.Test;
 import com.google.common.collect.RangeSet;
 
 /**
- * Tests for <code>{@link RangeSetAssert#containsAnyElementsOf(Iterable)}</code>.
+ * Tests for <code>{@link RangeSetAssert#containsAnyRangesOf(Iterable)}</code>.
  *
  * @author Ilya Koshaleu
  */
@@ -235,9 +235,10 @@ class RangeSetAssert_containsAnyElementsOf_Test {
     // GIVEN
     RangeSet<Integer> actual = null;
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyElementsOf(asList(1, 2)));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyRangesOf(asList(1, 2)));
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(actualIsNull());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(actualIsNull());
   }
 
   @Test
@@ -246,9 +247,10 @@ class RangeSetAssert_containsAnyElementsOf_Test {
     RangeSet<Integer> actual = create();
     Iterable<Integer> elements = null;
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyElementsOf(elements));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyRangesOf(elements));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(iterableValuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(iterableValuesToLookForIsNull());
   }
 
   @Test
@@ -256,7 +258,7 @@ class RangeSetAssert_containsAnyElementsOf_Test {
     // GIVEN
     RangeSet<Integer> actual = create();
     // THEN
-    assertThat(actual).containsAnyElementsOf(emptySet());
+    assertThat(actual).containsAnyRangesOf(emptySet());
   }
 
   @Test
@@ -264,9 +266,10 @@ class RangeSetAssert_containsAnyElementsOf_Test {
     // GIVEN
     RangeSet<Integer> actual = of(closed(0, 1));
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyElementsOf(emptySet()));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyRangesOf(emptySet()));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(iterableValuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(iterableValuesToLookForIsEmpty());
   }
 
   @Test
@@ -275,9 +278,10 @@ class RangeSetAssert_containsAnyElementsOf_Test {
     RangeSet<Integer> actual = of(closed(0, 3));
     List<Integer> expected = asList(4, 5);
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyElementsOf(expected));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyRangesOf(expected));
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(shouldContainAnyOf(actual, expected).create());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(shouldContainAnyOf(actual, expected).create());
   }
 
   @Test
@@ -285,6 +289,6 @@ class RangeSetAssert_containsAnyElementsOf_Test {
     // GIVEN
     RangeSet<Integer> actual = of(closed(1, 10));
     // THEN
-    assertThat(actual).containsAnyElementsOf(asList(0, 1, 2, 12, 13));
+    assertThat(actual).containsAnyRangesOf(asList(0, 1, 2, 12, 13));
   }
 }

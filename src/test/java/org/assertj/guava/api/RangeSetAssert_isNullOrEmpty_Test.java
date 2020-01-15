@@ -246,6 +246,7 @@ class RangeSetAssert_isNullOrEmpty_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).isNullOrEmpty());
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(shouldBeNullOrEmpty(actual).create());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(shouldBeNullOrEmpty(actual).create());
   }
 }

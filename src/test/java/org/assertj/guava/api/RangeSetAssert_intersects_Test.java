@@ -237,7 +237,8 @@ class RangeSetAssert_intersects_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(rangeSet).intersects());
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(actualIsNull());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(actualIsNull());
   }
 
   @Test
@@ -247,7 +248,8 @@ class RangeSetAssert_intersects_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(rangeSet).intersects((Range<Integer>[]) null));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsNull());
   }
 
   @Test
@@ -265,7 +267,8 @@ class RangeSetAssert_intersects_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).intersects());
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsEmpty());
   }
 
   @Test

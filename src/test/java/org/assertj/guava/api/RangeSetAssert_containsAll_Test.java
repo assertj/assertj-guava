@@ -238,7 +238,8 @@ class RangeSetAssert_containsAll_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).containsAll(singleton(1)));
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(actualIsNull());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(actualIsNull());
   }
 
   @Test
@@ -249,7 +250,8 @@ class RangeSetAssert_containsAll_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).containsAll(elements));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(iterableValuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(iterableValuesToLookForIsNull());
   }
 
   @Test
@@ -267,7 +269,8 @@ class RangeSetAssert_containsAll_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).containsAll(emptySet()));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(iterableValuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(iterableValuesToLookForIsEmpty());
   }
 
   @Test

@@ -216,7 +216,6 @@ import static org.assertj.core.util.Arrays.array;
 import static org.assertj.core.util.FailureMessages.actualIsNull;
 import static org.assertj.guava.api.Assertions.assertThat;
 
-import org.assertj.core.error.ShouldContain;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.RangeSet;
@@ -235,7 +234,8 @@ class RangeSetAssert_contains_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).contains(1));
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(actualIsNull());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(actualIsNull());
   }
 
   @Test
@@ -246,7 +246,8 @@ class RangeSetAssert_contains_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).contains(elements));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsNull());
   }
 
   @Test
@@ -264,7 +265,8 @@ class RangeSetAssert_contains_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).contains());
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsEmpty());
 
   }
 

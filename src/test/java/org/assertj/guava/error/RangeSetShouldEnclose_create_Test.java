@@ -202,65 +202,45 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.assertj.guava.internal.rangesets;
+package org.assertj.guava.error;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
-import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsEmpty;
-import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsNull;
-import static org.assertj.core.util.FailureMessages.actualIsNull;
+import static com.google.common.collect.ImmutableRangeSet.of;
+import static com.google.common.collect.Range.closed;
+import static com.google.common.collect.Range.open;
+import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.util.Arrays.array;
 import static org.assertj.core.util.IterableUtil.iterable;
+import static org.assertj.guava.error.RangeSetShouldEnclose.shouldEnclose;
 
-import org.assertj.guava.internal.RangeSetsBaseTest;
+import org.assertj.core.description.TextDescription;
+import org.assertj.core.error.ErrorMessageFactory;
+import org.assertj.core.presentation.StandardRepresentation;
 import org.junit.jupiter.api.Test;
 
-class RangeSets_assertContainsAnyElementsOf_Test extends RangeSetsBaseTest {
+/**
+ * Tests for
+ * <code>{@link RangeSetShouldEnclose#create(org.assertj.core.description.Description, org.assertj.core.presentation.Representation)}</code>
+ * 
+ * @author Ilya_Koshaleu
+ */
+public class RangeSetShouldEnclose_create_Test {
 
   @Test
-  void should_pass_if_actual_contains_all_values() {
-    rangeSets.assertContainsAnyElementsOf(someInfo(), actual, iterable(1, 15, 32));
-    // Order does not matter
-    rangeSets.assertContainsAnyElementsOf(someInfo(), actual, iterable(15, 1, 32));
-  }
-
-  @Test
-  void should_pass_if_actual_contains_any_value() {
-    rangeSets.assertContainsAnyElementsOf(someInfo(), actual, iterable(-100, 15, 37, 45));
-  }
-
-  @Test
-  void should_throw_error_if_iterable_of_values_to_look_for_is_null() {
-    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertContainsAnyElementsOf(someInfo(), actual, null))
-                                        .withMessage(iterableValuesToLookForIsNull());
-  }
-
-  @Test
-  void should_throw_error_if_actual_is_null() {
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertContainsAnyElementsOf(someInfo(),
-                                                                                                           null,
-                                                                                                           iterable()))
-                                                   .withMessage(actualIsNull());
-  }
-
-  @Test
-  void should_throw_error_if_iterable_of_values_to_look_for_is_empty() {
-    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertContainsAnyElementsOf(someInfo(), actual, iterable()))
-                                        .withMessage(iterableValuesToLookForIsEmpty());
-  }
-
-  @Test
-  void should_pass_if_both_actual_and_expected_are_empty() {
-    actual.clear();
-    rangeSets.assertContainsAnyElementsOf(someInfo(), actual, iterable());
-  }
-
-  @Test
-  void should_fail_if_actual_does_not_contain_value() {
-    Iterable<Integer> expected = iterable(100, 200);
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertContainsAnyElementsOf(someInfo(),
-                                                                                                           actual,
-                                                                                                           expected))
-                                                   .withMessage(shouldContainAnyOf(actual, expected).create());
+  void should_create_error_message() {
+    // GIVEN
+    ErrorMessageFactory factory = shouldEnclose(of(closed(0, 10)),
+                                                array(closed(2, 5), open(-5, 5)),
+                                                iterable(open(-5, 5)));
+    // WHEN
+    String message = factory.create(new TextDescription("Test"), StandardRepresentation.STANDARD_REPRESENTATION);
+    // THEN
+    assertThat(message).isEqualTo(format("[Test] %n" +
+                                         "Expecting:%n" +
+                                         "  <[[0..10]]>%n" +
+                                         "to enclose%n" +
+                                         "  <[[2..5], (-5..5)]>%n" +
+                                         "but it does not enclose%n" +
+                                         "  <[(-5..5)]>%n"));
   }
 }

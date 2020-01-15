@@ -246,7 +246,8 @@ class RangeSetAssert_containsAnyOf_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyOf(expected));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsNull());
   }
 
   @Test
@@ -264,7 +265,8 @@ class RangeSetAssert_containsAnyOf_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyOf());
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsEmpty());
   }
 
   @Test
@@ -275,7 +277,8 @@ class RangeSetAssert_containsAnyOf_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).containsAnyOf(expected));
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(shouldContainAnyOf(actual, expected).create());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(shouldContainAnyOf(actual, expected).create());
   }
 
   @Test

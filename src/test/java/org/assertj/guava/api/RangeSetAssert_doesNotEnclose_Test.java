@@ -244,7 +244,8 @@ class RangeSetAssert_doesNotEnclose_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEnclose(elements));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsNull());
   }
 
   @Test
@@ -254,7 +255,8 @@ class RangeSetAssert_doesNotEnclose_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEnclose());
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(valuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(valuesToLookForIsEmpty());
   }
 
   @Test

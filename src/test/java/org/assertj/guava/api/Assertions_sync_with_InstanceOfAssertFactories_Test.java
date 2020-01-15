@@ -213,7 +213,11 @@ import static org.assertj.core.api.InstanceOfAssertFactories.type;
 import static org.assertj.core.data.MapEntry.entry;
 import static org.assertj.core.util.Sets.newLinkedHashSet;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;

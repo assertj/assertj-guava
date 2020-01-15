@@ -227,25 +227,25 @@ class RangeSets_assertDoesNotIntersectAll_Test extends RangeSetsBaseTest {
 
   @Test
   void should_pass_if_actual_does_not_intersect_all_ranges() {
-    rangeSets.assertDoesNotIntersectAll(someInfo(), actual, iterable(open(-10, 0),
+    rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(), actual, iterable(open(-10, 0),
                                                                      open(11, 14),
                                                                      closed(40, 60)));
     // Order does not matter
-    rangeSets.assertDoesNotIntersectAll(someInfo(), actual, iterable(closed(40, 60),
+    rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(), actual, iterable(closed(40, 60),
                                                                      open(-10, 0),
                                                                      open(11, 14)));
   }
 
   @Test
   void should_pass_if_actual_does_not_intersect_range_set() {
-    rangeSets.assertDoesNotIntersectAll(someInfo(), actual, rangeSet(open(-10, 0),
+    rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(), actual, rangeSet(open(-10, 0),
                                                                      open(11, 14),
                                                                      closed(40, 60)));
   }
 
   @Test
   void should_pass_if_actual_does_not_intersect_given_ranges_even_if_duplicated() {
-    rangeSets.assertDoesNotIntersectAll(someInfo(), actual, iterable(open(-10, 0),
+    rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(), actual, iterable(open(-10, 0),
                                                                      open(-10, 0),
                                                                      closed(11, 14),
                                                                      closed(11, 14)));
@@ -253,35 +253,35 @@ class RangeSets_assertDoesNotIntersectAll_Test extends RangeSetsBaseTest {
 
   @Test
   void should_throw_error_if_iterable_of_ranges_to_look_for_is_empty() {
-    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotIntersectAll(someInfo(), actual,
+    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(), actual,
                                                                                               iterable()))
                                         .withMessage(iterableValuesToLookForIsEmpty());
   }
 
   @Test
   void should_throw_error_if_range_set_to_look_for_is_empty() {
-    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotIntersectAll(someInfo(), actual,
+    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(), actual,
                                                                                               rangeSet()))
                                         .withMessage(rangeSetValuesToLookForIsEmpty());
   }
 
   @Test
   void should_throw_error_if_iterable_of_ranges_to_look_for_is_null() {
-    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotIntersectAll(someInfo(), actual,
+    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(), actual,
                                                                                               (Iterable<? extends Range>) null))
                                         .withMessage(iterableValuesToLookForIsNull());
   }
 
   @Test
   void should_throw_error_if_range_set_to_look_for_is_null() {
-    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotIntersectAll(someInfo(), actual,
+    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(), actual,
                                                                                               (RangeSet) null))
                                         .withMessage(rangeSetValuesToLookForIsNull());
   }
 
   @Test
   void should_fail_if_actual_is_null_while_range_is_not() {
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAll(someInfo(),
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(),
                                                                                                          null,
                                                                                                          iterable(closed(-10,
                                                                                                                          0))))
@@ -290,7 +290,7 @@ class RangeSets_assertDoesNotIntersectAll_Test extends RangeSetsBaseTest {
 
   @Test
   void should_fail_if_actual_is_null_while_range_set_is_not() {
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAll(someInfo(),
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(),
                                                                                                          null,
                                                                                                          rangeSet(closed(-10,
                                                                                                                          0))))
@@ -303,7 +303,7 @@ class RangeSets_assertDoesNotIntersectAll_Test extends RangeSetsBaseTest {
 
     ErrorMessageFactory expectedMessage = shouldNotIntersects(actual, expected, expected);
 
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAll(someInfo(),
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(),
                                                                                                          actual,
                                                                                                          expected))
                                                    .withMessage(expectedMessage.create());
@@ -315,7 +315,7 @@ class RangeSets_assertDoesNotIntersectAll_Test extends RangeSetsBaseTest {
 
     ErrorMessageFactory expectedMessage = shouldNotIntersects(actual, expected, expected.asRanges());
 
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAll(someInfo(),
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(),
                                                                                                          actual,
                                                                                                          expected))
                                                    .withMessage(expectedMessage.create());
@@ -327,7 +327,7 @@ class RangeSets_assertDoesNotIntersectAll_Test extends RangeSetsBaseTest {
 
     ErrorMessageFactory expectedMessage = shouldNotIntersects(actual, expected, iterable(open(5, 15)));
 
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAll(someInfo(),
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(),
                                                                                                          actual,
                                                                                                          expected))
                                                    .withMessage(expectedMessage.create());
@@ -339,7 +339,7 @@ class RangeSets_assertDoesNotIntersectAll_Test extends RangeSetsBaseTest {
 
     ErrorMessageFactory expectedMessage = shouldNotIntersects(actual, expected, iterable(open(5, 15)));
 
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAll(someInfo(),
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotIntersectAnyRangeFrom(someInfo(),
                                                                                                          actual,
                                                                                                          expected))
                                                    .withMessage(expectedMessage.create());

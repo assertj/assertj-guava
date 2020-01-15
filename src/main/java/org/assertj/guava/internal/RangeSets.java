@@ -213,7 +213,10 @@ import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 import static org.assertj.core.internal.CommonValidations.checkSizes;
-import static org.assertj.core.internal.ErrorMessages.*;
+import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsEmpty;
+import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsNull;
+import static org.assertj.core.internal.ErrorMessages.valuesToLookForIsEmpty;
+import static org.assertj.core.internal.ErrorMessages.valuesToLookForIsNull;
 import static org.assertj.core.util.IterableUtil.sizeOf;
 import static org.assertj.core.util.IterableUtil.toArray;
 import static org.assertj.guava.error.RangeSetShouldEnclose.shouldEnclose;
@@ -304,13 +307,12 @@ public class RangeSets {
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && !values.iterator().hasNext()) return;
     failIfEmpty(values);
-    assertRangeSetContainsGivenValues(info, actual, toArray(values));
+    assertRangeSetContainsGivenValues(info, actual, toArray(values, Comparable.class));
   }
 
-  private void assertRangeSetContainsGivenValues(AssertionInfo info, RangeSet actual, Object[] values) {
+  private void assertRangeSetContainsGivenValues(AssertionInfo info, RangeSet actual, Comparable[] values) {
     @SuppressWarnings("unchecked")
-    final List<?> elementsNotFound = stream(values).filter(value -> !actual.contains((Comparable) value))
-                                                   .collect(toList());
+    final List<?> elementsNotFound = stream(values).filter(value -> !actual.contains(value)).collect(toList());
     if (!elementsNotFound.isEmpty()) {
       throw failures.failure(info, shouldContain(actual, values, elementsNotFound));
     }
@@ -346,18 +348,18 @@ public class RangeSets {
    *                        {@code values}.
    * @throws IllegalArgumentException if elements are null or elements are empty while actual is not empty.
    */
-  public void assertContainsAnyElementsOf(AssertionInfo info, RangeSet actual, Iterable<? extends Comparable> values) {
+  public void assertContainsAnyRangesOf(AssertionInfo info, RangeSet actual, Iterable<? extends Comparable> values) {
     assertNotNull(info, actual);
     failIfNull(values);
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && !values.iterator().hasNext()) return;
     failIfEmpty(values);
-    assertRangeSetContainsAnyGivenValues(info, actual, toArray(values));
+    assertRangeSetContainsAnyGivenValues(info, actual, toArray(values, Comparable.class));
   }
 
-  private void assertRangeSetContainsAnyGivenValues(AssertionInfo info, RangeSet actual, Object[] values) {
+  private void assertRangeSetContainsAnyGivenValues(AssertionInfo info, RangeSet actual, Comparable[] values) {
     @SuppressWarnings("unchecked")
-    final boolean match = stream(values).anyMatch(value -> actual.contains((Comparable) value));
+    final boolean match = stream(values).anyMatch(actual::contains);
     if (!match) throw failures.failure(info, shouldContainAnyOf(actual, values));
   }
 
@@ -374,7 +376,7 @@ public class RangeSets {
   public void assertDoesNotContain(AssertionInfo info, RangeSet actual, Comparable[] values) {
     assertNotNull(info, actual);
     failIfNullOrEmpty(values);
-    assertRangeSetDoesNotContainGiveValues(info, actual, values);
+    assertRangeSetDoesNotContainGivenValues(info, actual, values);
   }
 
   /**
@@ -390,12 +392,11 @@ public class RangeSets {
   public void assertDoesNotContainAll(AssertionInfo info, RangeSet actual, Iterable<? extends Comparable> values) {
     assertNotNull(info, actual);
     failIfNullOrEmpty(values);
-    assertRangeSetDoesNotContainGiveValues(info, actual, toArray(values));
+    assertRangeSetDoesNotContainGivenValues(info, actual, toArray(values, Comparable.class));
   }
 
-  private void assertRangeSetDoesNotContainGiveValues(AssertionInfo info, RangeSet actual, Object[] values) {
-    @SuppressWarnings("unchecked")
-    final List<?> elementsFound = stream(values).filter(value -> actual.contains((Comparable) value)).collect(toList());
+  private void assertRangeSetDoesNotContainGivenValues(AssertionInfo info, RangeSet actual, Comparable[] values) {
+    final List<?> elementsFound = stream(values).filter(actual::contains).collect(toList());
     if (!elementsFound.isEmpty()) {
       throw failures.failure(info, shouldNotContain(actual, values, elementsFound));
     }
@@ -436,7 +437,7 @@ public class RangeSets {
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && !range.iterator().hasNext()) return;
     failIfEmpty(range);
-    assertRangeSetIntersectsGivenValues(info, actual, toArray(range));
+    assertRangeSetIntersectsGivenValues(info, actual, toArray(range, Range.class));
   }
 
   /**
@@ -455,13 +456,12 @@ public class RangeSets {
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && rangeSet.isEmpty()) return;
     failIfEmpty(rangeSet);
-    assertRangeSetIntersectsGivenValues(info, actual, toArray(rangeSet.asRanges()));
+    assertRangeSetIntersectsGivenValues(info, actual, toArray(rangeSet.asRanges(), Range.class));
   }
 
-  private void assertRangeSetIntersectsGivenValues(AssertionInfo info, RangeSet actual, Object[] ranges) {
+  private void assertRangeSetIntersectsGivenValues(AssertionInfo info, RangeSet actual, Range[] ranges) {
     @SuppressWarnings("unchecked")
-    final List<?> nonIntersectedRanges = stream(ranges).filter(range -> !actual.intersects((Range) range))
-                                                       .collect(toList());
+    final List<?> nonIntersectedRanges = stream(ranges).filter(range -> !actual.intersects(range)).collect(toList());
     if (!nonIntersectedRanges.isEmpty()) {
       throw failures.failure(info, shouldIntersect(actual, ranges, nonIntersectedRanges));
     }
@@ -534,13 +534,13 @@ public class RangeSets {
    *                        {@code range}.
    * @throws IllegalArgumentException if range is null or range is empty while actual is not empty.
    */
-  public void assertIntersectsAnyElementsOf(AssertionInfo info, RangeSet actual, Iterable<? extends Range> range) {
+  public void assertIntersectsAnyRangesOf(AssertionInfo info, RangeSet actual, Iterable<? extends Range> range) {
     assertNotNull(info, actual);
     failIfNull(range);
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && !range.iterator().hasNext()) return;
     failIfEmpty(range);
-    assertRangeSetIntersectsAnyOfGivenValues(info, actual, toArray(range));
+    assertRangeSetIntersectsAnyOfGivenValues(info, actual, toArray(range, Range.class));
   }
 
   /**
@@ -554,18 +554,17 @@ public class RangeSets {
    *                        {@code rangeSet}.
    * @throws IllegalArgumentException if range set is null or range set is empty while actual is not empty.
    */
-  public void assertIntersectsAnyElementsOf(AssertionInfo info, RangeSet actual, RangeSet rangeSet) {
+  public void assertIntersectsAnyRangesOf(AssertionInfo info, RangeSet actual, RangeSet rangeSet) {
     assertNotNull(info, actual);
     failIfNull(rangeSet);
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && rangeSet.isEmpty()) return;
     failIfEmpty(rangeSet);
-    assertRangeSetIntersectsAnyOfGivenValues(info, actual, toArray(rangeSet.asRanges()));
+    assertRangeSetIntersectsAnyOfGivenValues(info, actual, toArray(rangeSet.asRanges(), Range.class));
   }
 
-  private void assertRangeSetIntersectsAnyOfGivenValues(AssertionInfo info, RangeSet actual, Object[] ranges) {
-    @SuppressWarnings("unchecked")
-    final boolean match = stream(ranges).anyMatch(range -> actual.intersects((Range) range));
+  private void assertRangeSetIntersectsAnyOfGivenValues(AssertionInfo info, RangeSet actual, Range[] ranges) {
+    final boolean match = stream(ranges).anyMatch(actual::intersects);
     if (!match) throw failures.failure(info, shouldIntersectAnyOf(actual, ranges));
   }
 
@@ -595,10 +594,10 @@ public class RangeSets {
    * @throws AssertionError if the actual {@code RangeSet} intersects at least one element of the given {@code range}.
    * @throws IllegalArgumentException if range is null or range is empty while actual is not empty.
    */
-  public void assertDoesNotIntersectAll(AssertionInfo info, RangeSet actual, Iterable<? extends Range> range) {
+  public void assertDoesNotIntersectAnyRangeFrom(AssertionInfo info, RangeSet actual, Iterable<? extends Range> range) {
     assertNotNull(info, actual);
     failIfNullOrEmpty(range);
-    assertRangeSetDoesNotIntersectGivenValues(info, actual, toArray(range));
+    assertRangeSetDoesNotIntersectGivenValues(info, actual, toArray(range, Range.class));
   }
 
   /**
@@ -611,15 +610,14 @@ public class RangeSets {
    * @throws AssertionError if the actual {@code RangeSet} intersects at least one element of the given {@code range}.
    * @throws IllegalArgumentException if range set is null or range set is empty while actual is not empty.
    */
-  public void assertDoesNotIntersectAll(AssertionInfo info, RangeSet actual, RangeSet rangeSet) {
+  public void assertDoesNotIntersectAnyRangeFrom(AssertionInfo info, RangeSet actual, RangeSet rangeSet) {
     assertNotNull(info, actual);
     failIfNullOrEmpty(rangeSet);
-    assertRangeSetDoesNotIntersectGivenValues(info, actual, toArray(rangeSet.asRanges()));
+    assertRangeSetDoesNotIntersectGivenValues(info, actual, toArray(rangeSet.asRanges(), Range.class));
   }
 
-  private void assertRangeSetDoesNotIntersectGivenValues(AssertionInfo info, RangeSet actual, Object[] ranges) {
-    @SuppressWarnings("unchecked")
-    final List<?> intersected = stream(ranges).filter(range -> actual.intersects((Range) range)).collect(toList());
+  private void assertRangeSetDoesNotIntersectGivenValues(AssertionInfo info, RangeSet actual, Range[] ranges) {
+    final List<?> intersected = stream(ranges).filter(actual::intersects).collect(toList());
     if (!intersected.isEmpty()) {
       throw failures.failure(info, shouldNotIntersects(actual, ranges, intersected));
     }
@@ -660,7 +658,7 @@ public class RangeSets {
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && !range.iterator().hasNext()) return;
     failIfEmpty(range);
-    assertRangeSetEnclosesGivenValues(info, actual, toArray(range));
+    assertRangeSetEnclosesGivenValues(info, actual, toArray(range, Range.class));
   }
 
   /**
@@ -679,12 +677,12 @@ public class RangeSets {
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && rangeSet.isEmpty()) return;
     failIfEmpty(rangeSet);
-    assertRangeSetEnclosesGivenValues(info, actual, toArray(rangeSet.asRanges()));
+    assertRangeSetEnclosesGivenValues(info, actual, toArray(rangeSet.asRanges(), Range.class));
   }
 
-  private void assertRangeSetEnclosesGivenValues(AssertionInfo info, RangeSet actual, Object[] ranges) {
+  private void assertRangeSetEnclosesGivenValues(AssertionInfo info, RangeSet actual, Range[] ranges) {
     @SuppressWarnings("unchecked")
-    final List<?> notEnclosed = stream(ranges).filter(range -> !actual.encloses((Range) range)).collect(toList());
+    final List<?> notEnclosed = stream(ranges).filter(range -> !actual.encloses(range)).collect(toList());
     if (!notEnclosed.isEmpty()) {
       throw failures.failure(info, shouldEnclose(actual, ranges, notEnclosed));
     }
@@ -719,13 +717,13 @@ public class RangeSets {
    * @throws AssertionError if the actual {@code RangeSet} does not enclose all elements of the given {@code range}.
    * @throws IllegalArgumentException if range is null or range is empty while actual is not empty.
    */
-  public void assertEnclosesAnyElementsOf(AssertionInfo info, RangeSet actual, Iterable<? extends Range> range) {
+  public void assertEnclosesAnyRangesOf(AssertionInfo info, RangeSet actual, Iterable<? extends Range> range) {
     assertNotNull(info, actual);
     failIfNull(range);
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && !range.iterator().hasNext()) return;
     failIfEmpty(range);
-    assertRangeSetEnclosesAnyOfGivenValues(info, actual, toArray(range));
+    assertRangeSetEnclosesAnyOfGivenValues(info, actual, toArray(range, Range.class));
   }
 
   /**
@@ -738,18 +736,17 @@ public class RangeSets {
    * @throws AssertionError if the actual {@code RangeSet} does not enclose all elements of the given {@code rangeSet}.
    * @throws IllegalArgumentException if range set is null or range set is empty while actual is not empty.
    */
-  public void assertEnclosesAnyElementsOf(AssertionInfo info, RangeSet actual, RangeSet rangeSet) {
+  public void assertEnclosesAnyRangesOf(AssertionInfo info, RangeSet actual, RangeSet rangeSet) {
     assertNotNull(info, actual);
     failIfNull(rangeSet);
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && rangeSet.isEmpty()) return;
     failIfEmpty(rangeSet);
-    assertRangeSetEnclosesAnyOfGivenValues(info, actual, toArray(rangeSet.asRanges()));
+    assertRangeSetEnclosesAnyOfGivenValues(info, actual, toArray(rangeSet.asRanges(), Range.class));
   }
 
-  private void assertRangeSetEnclosesAnyOfGivenValues(AssertionInfo info, RangeSet actual, Object[] ranges) {
-    @SuppressWarnings("unchecked")
-    final boolean match = stream(ranges).anyMatch(range -> actual.encloses((Range) range));
+  private void assertRangeSetEnclosesAnyOfGivenValues(AssertionInfo info, RangeSet actual, Range[] ranges) {
+    final boolean match = stream(ranges).anyMatch(actual::encloses);
     if (!match) throw failures.failure(info, shouldEncloseAnyOf(actual, ranges));
   }
 
@@ -779,10 +776,10 @@ public class RangeSets {
    * @throws AssertionError if the actual {@code RangeSet} encloses all elements of the given {@code range}.
    * @throws IllegalArgumentException if range is null or range is empty while actual is not empty.
    */
-  public void assertDoesNotEncloseAll(AssertionInfo info, RangeSet actual, Iterable<? extends Range> range) {
+  public void doesNotEncloseAnyRangesOf(AssertionInfo info, RangeSet actual, Iterable<? extends Range> range) {
     assertNotNull(info, actual);
     failIfNullOrEmpty(range);
-    assertRangeSetDoesNotEncloseGivenValues(info, actual, toArray(range));
+    assertRangeSetDoesNotEncloseGivenValues(info, actual, toArray(range, Range.class));
   }
 
   /**
@@ -795,15 +792,14 @@ public class RangeSets {
    * @throws AssertionError if the actual {@code RangeSet} encloses all elements of the given {@code range}.
    * @throws IllegalArgumentException if range set is null or range set is empty while actual is not empty.
    */
-  public void assertDoesNotEncloseAll(AssertionInfo info, RangeSet actual, RangeSet rangeSet) {
+  public void doesNotEncloseAnyRangesOf(AssertionInfo info, RangeSet actual, RangeSet rangeSet) {
     assertNotNull(info, actual);
     failIfNullOrEmpty(rangeSet);
-    assertRangeSetDoesNotEncloseGivenValues(info, actual, toArray(rangeSet.asRanges()));
+    assertRangeSetDoesNotEncloseGivenValues(info, actual, toArray(rangeSet.asRanges(), Range.class));
   }
 
-  private void assertRangeSetDoesNotEncloseGivenValues(AssertionInfo info, RangeSet actual, Object[] ranges) {
-    @SuppressWarnings("unchecked")
-    final List<?> enclosedRanges = stream(ranges).filter(range -> actual.encloses((Range) range)).collect(toList());
+  private void assertRangeSetDoesNotEncloseGivenValues(AssertionInfo info, RangeSet actual, Range[] ranges) {
+    final List<?> enclosedRanges = stream(ranges).filter(actual::encloses).collect(toList());
     if (!enclosedRanges.isEmpty()) {
       throw failures.failure(info, shouldNotEnclose(actual, ranges, enclosedRanges));
     }

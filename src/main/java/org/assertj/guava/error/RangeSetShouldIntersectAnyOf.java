@@ -228,6 +228,6 @@ public class RangeSetShouldIntersectAnyOf extends BasicErrorMessageFactory {
    * @param expected expected range to intersect.
    */
   private RangeSetShouldIntersectAnyOf(Object actual, Object expected) {
-    super("%nExpecting%n <%s>%nshould intersect at least one range of the given:%n <%s>%n", actual, expected);
+    super("%nExpecting:%n  <%s>%nto intersect at least one range of the given:%n  <%s>%n", actual, expected);
   }
 }

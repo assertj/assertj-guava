@@ -209,10 +209,13 @@ import static com.google.common.collect.Range.closed;
 import static com.google.common.collect.Range.open;
 import static com.google.common.collect.TreeRangeSet.create;
 import static java.util.Arrays.asList;
-import static java.util.Collections.*;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.internal.ErrorMessages.*;
+import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsEmpty;
+import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsNull;
 import static org.assertj.core.util.FailureMessages.actualIsNull;
 import static org.assertj.guava.api.Assertions.assertThat;
 import static org.assertj.guava.error.RangeSetShouldNotIntersect.shouldNotIntersects;
@@ -234,9 +237,10 @@ class RangeSetAssert_doesNotIntersectAll_Test {
     // GIVEN
     RangeSet<Integer> actual = null;
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAll(singleton(closed(1, 3))));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAnyRangeFrom(singleton(closed(1, 3))));
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(actualIsNull());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(actualIsNull());
   }
 
   @Test
@@ -245,9 +249,10 @@ class RangeSetAssert_doesNotIntersectAll_Test {
     RangeSet<Integer> actual = create();
     Iterable<Range<Integer>> expected = null;
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAll(expected));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAnyRangeFrom(expected));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(iterableValuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(iterableValuesToLookForIsNull());
   }
 
   @Test
@@ -256,9 +261,10 @@ class RangeSetAssert_doesNotIntersectAll_Test {
     RangeSet<Integer> actual = create();
     RangeSet<Integer> expected = null;
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAll(expected));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAnyRangeFrom(expected));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(rangeSetValuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(rangeSetValuesToLookForIsNull());
   }
 
   @Test
@@ -266,9 +272,10 @@ class RangeSetAssert_doesNotIntersectAll_Test {
     // GIVEN
     RangeSet<Integer> actual = create();
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAll(emptySet()));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAnyRangeFrom(emptySet()));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(iterableValuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(iterableValuesToLookForIsEmpty());
   }
 
   @Test
@@ -276,9 +283,10 @@ class RangeSetAssert_doesNotIntersectAll_Test {
     // GIVEN
     RangeSet<Integer> actual = create();
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAll(of()));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAnyRangeFrom(of()));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(rangeSetValuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(rangeSetValuesToLookForIsEmpty());
   }
 
   @Test
@@ -286,9 +294,9 @@ class RangeSetAssert_doesNotIntersectAll_Test {
     // GIVEN
     RangeSet<Integer> actual = of(closed(1, 10));
     // THEN
-    assertThat(actual).doesNotIntersectAll(asList(closed(11, 14),
-                                                  open(15, 19),
-                                                  open(-10, 0)));
+    assertThat(actual).doesNotIntersectAnyRangeFrom(asList(closed(11, 14),
+                                                           open(15, 19),
+                                                           open(-10, 0)));
   }
 
   @Test
@@ -301,7 +309,7 @@ class RangeSetAssert_doesNotIntersectAll_Test {
                                                   .add(open(-10, 0))
                                                   .build();
     // THEN
-    assertThat(actual).doesNotIntersectAll(expected);
+    assertThat(actual).doesNotIntersectAnyRangeFrom(expected);
   }
 
   @Test
@@ -312,7 +320,7 @@ class RangeSetAssert_doesNotIntersectAll_Test {
                                            open(3, 12),
                                            open(12, 15));
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAll(expected));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAnyRangeFrom(expected));
     // THEN
     assertThat(throwable).isInstanceOf(AssertionError.class)
                          .hasMessage(shouldNotIntersects(actual, expected, singletonList(open(3, 12)))
@@ -329,7 +337,7 @@ class RangeSetAssert_doesNotIntersectAll_Test {
                                                   .add(open(12, 15))
                                                   .build();
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAll(expected));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotIntersectAnyRangeFrom(expected));
     // THEN
     assertThat(throwable).isInstanceOf(AssertionError.class)
                          .hasMessage(shouldNotIntersects(actual, expected, singletonList(open(3, 12)))

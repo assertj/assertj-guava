@@ -236,7 +236,7 @@ class RangeSetAssert_doesNotEncloseAll_Test {
     // GIVEN
     RangeSet<Integer> actual = null;
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAll(of(closed(0, 10))));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAnyRangesOf(of(closed(0, 10))));
     // THEN
     assertThat(throwable).isInstanceOf(AssertionError.class)
                          .hasMessage(actualIsNull());
@@ -248,9 +248,10 @@ class RangeSetAssert_doesNotEncloseAll_Test {
     RangeSet<Integer> actual = create();
     Iterable<Range<Integer>> range = null;
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAll(range));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAnyRangesOf(range));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(iterableValuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(iterableValuesToLookForIsNull());
   }
 
   @Test
@@ -259,9 +260,10 @@ class RangeSetAssert_doesNotEncloseAll_Test {
     RangeSet<Integer> actual = create();
     RangeSet<Integer> rangeSet = null;
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAll(rangeSet));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAnyRangesOf(rangeSet));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(rangeSetValuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(rangeSetValuesToLookForIsNull());
   }
 
   @Test
@@ -269,9 +271,10 @@ class RangeSetAssert_doesNotEncloseAll_Test {
     // GIVEN
     RangeSet<Integer> actual = create();
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAll(emptySet()));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAnyRangesOf(emptySet()));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(iterableValuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(iterableValuesToLookForIsEmpty());
   }
 
   @Test
@@ -279,9 +282,10 @@ class RangeSetAssert_doesNotEncloseAll_Test {
     // GIVEN
     RangeSet<Integer> actual = create();
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAll(of()));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAnyRangesOf(of()));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(rangeSetValuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(rangeSetValuesToLookForIsEmpty());
   }
 
   @Test
@@ -289,9 +293,9 @@ class RangeSetAssert_doesNotEncloseAll_Test {
     // GIVEN
     RangeSet<Integer> actual = of(open(1, 10));
     // THEN
-    assertThat(actual).doesNotEncloseAll(asList(closed(1, 5),
-                                                closed(5, 12),
-                                                closed(14, 17)));
+    assertThat(actual).doesNotEncloseAnyRangesOf(asList(closed(1, 5),
+                                                        closed(5, 12),
+                                                        closed(14, 17)));
   }
 
   @Test
@@ -304,7 +308,7 @@ class RangeSetAssert_doesNotEncloseAll_Test {
                                                   .add(closed(14, 17))
                                                   .build();
     // THEN
-    assertThat(actual).doesNotEncloseAll(rangeSet);
+    assertThat(actual).doesNotEncloseAnyRangesOf(rangeSet);
   }
 
   @Test
@@ -314,7 +318,7 @@ class RangeSetAssert_doesNotEncloseAll_Test {
     List<Range<Integer>> expected = asList(closed(2, 5),
                                            closed(4, 12));
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAll(expected));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAnyRangesOf(expected));
     // THEN
     assertThat(throwable).isInstanceOf(AssertionError.class)
                          .hasMessage(shouldNotEnclose(actual, expected, singletonList(closed(2, 5)))
@@ -331,7 +335,7 @@ class RangeSetAssert_doesNotEncloseAll_Test {
                                                   .add(closed(14, 17))
                                                   .build();
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAll(expected));
+    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotEncloseAnyRangesOf(expected));
     // THEN
     assertThat(throwable).isInstanceOf(AssertionError.class)
                          .hasMessage(shouldNotEnclose(actual, expected, singletonList(closed(1, 5)))

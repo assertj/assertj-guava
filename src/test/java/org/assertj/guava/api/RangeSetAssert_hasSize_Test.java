@@ -225,7 +225,8 @@ class RangeSetAssert_hasSize_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).hasSize(5));
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(actualIsNull());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(actualIsNull());
   }
 
   @Test

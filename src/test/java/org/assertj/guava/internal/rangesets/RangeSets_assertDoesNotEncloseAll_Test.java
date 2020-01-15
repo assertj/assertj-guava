@@ -227,21 +227,21 @@ class RangeSets_assertDoesNotEncloseAll_Test extends RangeSetsBaseTest {
 
   @Test
   void should_pass_if_actual_does_not_enclose_iterable_of_ranges() {
-    rangeSets.assertDoesNotEncloseAll(someInfo(), actual, iterable(open(-10, 1),
+    rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual, iterable(open(-10, 1),
                                                                    open(11, 20),
                                                                    closed(40, 60)));
   }
 
   @Test
   void should_pass_if_actual_does_not_enclose_range_set() {
-    rangeSets.assertDoesNotEncloseAll(someInfo(), actual, rangeSet(open(-10, 1),
+    rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual, rangeSet(open(-10, 1),
                                                                    open(11, 20),
                                                                    closed(40, 60)));
   }
 
   @Test
   void should_pass_if_actual_does_not_enclose_ranges_even_if_duplicated() {
-    rangeSets.assertDoesNotEncloseAll(someInfo(), actual, iterable(open(-10, 1),
+    rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual, iterable(open(-10, 1),
                                                                    open(-10, 1),
                                                                    open(11, 20),
                                                                    open(11, 20),
@@ -251,42 +251,42 @@ class RangeSets_assertDoesNotEncloseAll_Test extends RangeSetsBaseTest {
 
   @Test
   void should_throw_error_if_iterable_of_ranges_to_look_for_is_empty() {
-    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotEncloseAll(someInfo(), actual,
+    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual,
                                                                                             iterable()))
                                         .withMessage(iterableValuesToLookForIsEmpty());
   }
 
   @Test
   void should_throw_error_if_range_set_to_look_for_is_empty() {
-    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotEncloseAll(someInfo(), actual,
+    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual,
                                                                                             rangeSet()))
                                         .withMessage(rangeSetValuesToLookForIsEmpty());
   }
 
   @Test
   void should_throw_error_if_iterable_of_ranges_to_look_for_is_null() {
-    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotEncloseAll(someInfo(), actual,
+    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual,
                                                                                             (Iterable<? extends Range>) null))
                                         .withMessage(iterableValuesToLookForIsNull());
   }
 
   @Test
   void should_throw_error_if_range_set_to_look_for_is_null() {
-    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.assertDoesNotEncloseAll(someInfo(), actual,
+    assertThatIllegalArgumentException().isThrownBy(() -> rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual,
                                                                                             (RangeSet) null))
                                         .withMessage(rangeSetValuesToLookForIsNull());
   }
 
   @Test
   void should_fail_if_actual_is_null_for_iterable() {
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotEncloseAll(someInfo(), null,
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.doesNotEncloseAnyRangesOf(someInfo(), null,
                                                                                                        iterable(closed(-10, 0))))
                                                    .withMessage(actualIsNull());
   }
 
   @Test
   void should_fail_if_actual_is_null_for_range_set() {
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotEncloseAll(someInfo(), null,
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.doesNotEncloseAnyRangesOf(someInfo(), null,
                                                                                                        rangeSet(closed(-10, 0))))
                                                    .withMessage(actualIsNull());
   }
@@ -297,7 +297,7 @@ class RangeSets_assertDoesNotEncloseAll_Test extends RangeSetsBaseTest {
 
     ErrorMessageFactory expectedMessage = shouldNotEnclose(actual, expected, expected);
 
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotEncloseAll(someInfo(), actual,
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual,
                                                                                                        expected))
                                                    .withMessage(expectedMessage.create());
   }
@@ -308,7 +308,7 @@ class RangeSets_assertDoesNotEncloseAll_Test extends RangeSetsBaseTest {
 
     ErrorMessageFactory expectedMessage = shouldNotEnclose(actual, expected, expected.asRanges());
 
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotEncloseAll(someInfo(), actual,
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual,
                                                                                                        expected))
                                                    .withMessage(expectedMessage.create());
   }
@@ -319,7 +319,7 @@ class RangeSets_assertDoesNotEncloseAll_Test extends RangeSetsBaseTest {
 
     ErrorMessageFactory expectedMessage = shouldNotEnclose(actual, expected, iterable(open(16, 19)));
 
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotEncloseAll(someInfo(), actual,
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual,
                                                                                                        expected))
                                                    .withMessage(expectedMessage.create());
   }
@@ -330,7 +330,7 @@ class RangeSets_assertDoesNotEncloseAll_Test extends RangeSetsBaseTest {
 
     ErrorMessageFactory expectedMessage = shouldNotEnclose(actual, expected, iterable(open(16, 19)));
 
-    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.assertDoesNotEncloseAll(someInfo(), actual,
+    assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> rangeSets.doesNotEncloseAnyRangesOf(someInfo(), actual,
                                                                                                        expected))
                                                    .withMessage(expectedMessage.create());
   }

@@ -238,7 +238,8 @@ class RangeSetAssert_enclosesAll_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).enclosesAll(of(closed(0, 1))));
     // THEN
-    assertThat(throwable).isInstanceOf(AssertionError.class).hasMessage(actualIsNull());
+    assertThat(throwable).isInstanceOf(AssertionError.class)
+                         .hasMessage(actualIsNull());
   }
 
   @Test
@@ -249,7 +250,8 @@ class RangeSetAssert_enclosesAll_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).enclosesAll(range));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(iterableValuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(iterableValuesToLookForIsNull());
   }
 
   @Test
@@ -260,7 +262,8 @@ class RangeSetAssert_enclosesAll_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).enclosesAll(rangeSet));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(rangeSetValuesToLookForIsNull());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(rangeSetValuesToLookForIsNull());
   }
 
   @Test
@@ -286,7 +289,8 @@ class RangeSetAssert_enclosesAll_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).enclosesAll(emptySet()));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(iterableValuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(iterableValuesToLookForIsEmpty());
   }
 
   @Test
@@ -296,7 +300,8 @@ class RangeSetAssert_enclosesAll_Test {
     // WHEN
     Throwable throwable = catchThrowable(() -> assertThat(actual).enclosesAll(of()));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class).hasMessage(rangeSetValuesToLookForIsEmpty());
+    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
+                         .hasMessage(rangeSetValuesToLookForIsEmpty());
   }
 
   @Test
