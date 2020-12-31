@@ -27,7 +27,6 @@
   </issueManagement>
 
   <properties>
-    <javadocAdditionalOptions>-html5 --allow-script-in-comments --no-module-directories</javadocAdditionalOptions>
     <guava.version>30.0-jre</guava.version>
     <assertj-core.version>3.18.0</assertj-core.version>
   </properties>
@@ -147,23 +146,20 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <!-- needed to fix javadoc on java 11+ https://github.com/joel-costigliola/assertj-core/issues/1403 -->
-          <source>8</source>
-          <!-- (1) CSS file location -->
-          <stylesheetfile>${project.build.directory}/javadoc-stylesheet/assertj-javadoc-min.css</stylesheetfile>
-          <!-- init Highlight -->
-          <additionalOptions>${javadocAdditionalOptions}</additionalOptions>
-          <nohelp>true</nohelp>
-          <show>private</show>
-          <footer><![CDATA[
-            <link rel="stylesheet" href="./assertj-javadoc.css"">
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
-            <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
-        ]]></footer>
-        </configuration>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+              <!-- needed to fix javadoc on java 11+ https://github.com/joel-costigliola/assertj-core/issues/1403 -->
+              <source>8</source>
+          </configuration>
+          <executions>
+              <execution>
+                  <id>attach-javadocs</id>
+                  <goals>
+                      <goal>jar</goal>
+                  </goals>
+              </execution>
+          </executions>
       </plugin>
     </plugins>
   </build>
