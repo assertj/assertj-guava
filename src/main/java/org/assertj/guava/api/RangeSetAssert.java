@@ -31,8 +31,7 @@ import com.google.common.collect.RangeSet;
  */
 public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<RangeSetAssert<T>, RangeSet<T>> {
 
-  @VisibleForTesting
-  RangeSets rangeSets = RangeSets.instance();
+  private final RangeSets rangeSets = new RangeSets(objects::assertNotNull);
 
   protected RangeSetAssert(RangeSet<T> actual) {
     super(actual, RangeSetAssert.class);

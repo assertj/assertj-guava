@@ -38,10 +38,10 @@ import static org.assertj.guava.internal.ErrorMessages.rangeSetValuesToLookForIs
 import static org.assertj.guava.util.ExceptionUtils.throwIllegalArgumentExceptionIfTrue;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import org.assertj.core.api.AssertionInfo;
 import org.assertj.core.internal.Failures;
-import org.assertj.core.internal.Objects;
 import org.assertj.core.util.VisibleForTesting;
 
 import com.google.common.collect.Range;
@@ -54,18 +54,13 @@ import com.google.common.collect.RangeSet;
  */
 public class RangeSets {
 
-  private final static RangeSets INSTANCE = new RangeSets();
+  private final BiConsumer<AssertionInfo, RangeSet<?>> assertNotNull;
 
   @VisibleForTesting
   Failures failures = Failures.instance();
 
-  /**
-   * Returns singleton instance of this class.
-   *
-   * @return singleton instance of this class.
-   */
-  public static RangeSets instance() {
-    return INSTANCE;
+  public RangeSets(BiConsumer<AssertionInfo, RangeSet<?>> assertNotNull) {
+    this.assertNotNull = java.util.Objects.requireNonNull(assertNotNull);
   }
 
   /**
@@ -668,7 +663,7 @@ public class RangeSets {
   }
 
   private void assertNotNull(AssertionInfo info, RangeSet<?> actual) {
-    Objects.instance().assertNotNull(info, actual);
+    assertNotNull.accept(info, actual);
   }
 
   private void failIfNull(Object[] array) {

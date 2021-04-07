@@ -19,6 +19,7 @@ import static com.google.common.collect.TreeRangeSet.create;
 
 import org.assertj.core.api.AssertionInfo;
 import org.assertj.core.api.WritableAssertionInfo;
+import org.assertj.core.internal.Objects;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.google.common.collect.ImmutableRangeSet;
@@ -44,7 +45,7 @@ public abstract class RangeSetsBaseTest {
     this.actual.add(closed(15, 20));
     this.actual.add(open(30, 35));
 
-    this.rangeSets = new RangeSets();
+    this.rangeSets = new RangeSets(Objects.instance()::assertNotNull);
   }
 
   protected AssertionInfo someInfo() {
