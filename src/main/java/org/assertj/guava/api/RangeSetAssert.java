@@ -12,6 +12,14 @@
  */
 package org.assertj.guava.api;
 
+import static java.util.Arrays.stream;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
+
+import java.util.List;
+
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.util.VisibleForTesting;
 import org.assertj.guava.internal.RangeSets;
@@ -62,7 +70,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   }
 
   /**
-   * Verifies that the given {@code RangeSet} contains the given ranges.
+   * Verifies that the given {@code RangeSet} contains the given values.
    * <p>
    * Example:
    *
@@ -74,16 +82,36 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    *
    * assertThat(rangeSet).contains(50, 270, 550);</code></pre>
    *
-   * @param ranges the ranges to look for in actual {@code RangeSet}.
+   * @param values the values to look for in actual {@code RangeSet}.
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not contain the given {@code ranges}.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
+   * @throws AssertionError if the actual {@code RangeSet} does not contain the given {@code values}.
+   * @throws IllegalArgumentException if values are null or values are empty while actual is not empty.
    */
   @SafeVarargs
-  public final RangeSetAssert<T> contains(final T... ranges) {
-    rangeSets.assertContains(info, actual, ranges);
+  public final RangeSetAssert<T> contains(T... values) {
+    isNotNull();
+    assertContains(values);
     return myself;
+  }
+
+  private void assertContains(T[] values) {
+    requireNonNull(values, shouldNotBeNull("values")::create);
+    if (actual.isEmpty() && values.length == 0) return;
+    failIfEmpty(values, "values");
+    assertRangeSetContainsGivenValues(actual, values);
+  }
+
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  private void assertRangeSetContainsGivenValues(RangeSet actual, Comparable[] values) {
+    final List<?> elementsNotFound = stream(values).filter(value -> !actual.contains(value)).collect(toList());
+    if (!elementsNotFound.isEmpty()) {
+      throwAssertionError(shouldContain(actual, values, elementsNotFound));
+    }
+  }
+
+  private static <T> void failIfEmpty(T[] array, String label) {
+    if (array.length == 0) throw new IllegalArgumentException("Expecting " + label + " not to be empty");
   }
 
   /**

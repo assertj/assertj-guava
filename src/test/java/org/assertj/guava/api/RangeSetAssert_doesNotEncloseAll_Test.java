@@ -38,7 +38,6 @@ import com.google.common.collect.ImmutableRangeSet;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeSet;
 
-@DisplayName("RangeSetAssert doesNotEncloseAll")
 class RangeSetAssert_doesNotEncloseAll_Test {
 
   @Test
