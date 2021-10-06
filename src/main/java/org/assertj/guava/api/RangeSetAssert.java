@@ -15,6 +15,7 @@ package org.assertj.guava.api;
 import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
+import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
 import static org.assertj.core.util.IterableUtil.toArray;
@@ -247,8 +248,13 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} is not empty.
    */
   public RangeSetAssert<T> isEmpty() {
-    rangeSets.assertEmpty(info, actual);
+    isNotNull();
+    assertEmpty();
     return myself;
+  }
+
+  private void assertEmpty() {
+    if (!actual.isEmpty()) throwAssertionError(shouldBeEmpty(actual));
   }
 
   /**

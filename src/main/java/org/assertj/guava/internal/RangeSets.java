@@ -243,20 +243,6 @@ public class RangeSets {
   }
 
   /**
-   * Asserts that the given {@code RangeSet} is empty.
-   *
-   * @param <T> the type of rangeset elements
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} is not empty.
-   */
-  public <T extends Comparable<T>> void assertEmpty(AssertionInfo info, RangeSet<T> actual) {
-    assertNotNull(info, actual);
-    if (!actual.isEmpty()) throw failures.failure(info, shouldBeEmpty(actual));
-  }
-
-  /**
    * Asserts that the given {@code RangeSet} is not empty.
    *
    * @param <T> the type of rangeset elements
