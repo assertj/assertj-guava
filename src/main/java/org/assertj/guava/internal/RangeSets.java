@@ -81,34 +81,6 @@ public class RangeSets {
   }
 
   /**
-   * Asserts that the given {@code RangeSet} contains all the given values.
-   *
-   * @param <T> the type of rangeset elements
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @param values the values that are expected to be in the given {@code RangeSet}.
-   * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not contain all the given {@code elements}.
-   * @throws IllegalArgumentException if elements are null or elements are empty while actual is not empty.
-   */
-  public <T extends Comparable<T>> void assertContainsAll(AssertionInfo info, RangeSet<T> actual, Iterable<T> values) {
-    assertNotNull(info, actual);
-    failIfNull(values);
-    // Should pass if both actual and expected are empty
-    if (actual.isEmpty() && !values.iterator().hasNext()) return;
-    failIfEmpty(values);
-    assertRangeSetContainsGivenValues(info, actual, toArray(values, Comparable.class));
-  }
-
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  private void assertRangeSetContainsGivenValues(AssertionInfo info, RangeSet actual, Comparable[] values) {
-    final List<?> elementsNotFound = stream(values).filter(value -> !actual.contains(value)).collect(toList());
-    if (!elementsNotFound.isEmpty()) {
-      throw failures.failure(info, shouldContain(actual, values, elementsNotFound));
-    }
-  }
-
-  /**
    * Asserts that the given {@code RangeSet} contains at least one of the given values.
    *
    * @param <T> the type of rangeset elements

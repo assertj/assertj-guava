@@ -13,7 +13,6 @@
 package org.assertj.guava.api;
 
 import static com.google.common.collect.Range.closed;
-import static com.google.common.collect.TreeRangeSet.create;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.error.ShouldContain.shouldContain;
@@ -47,13 +46,13 @@ class RangeSetAssert_contains_Test {
   @Test
   void should_fail_if_values_is_null() {
     // GIVEN
-    RangeSet<Integer> actual = create();
+    RangeSet<Integer> actual = ImmutableRangeSet.of();
     Integer[] values = null;
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).contains(values));
+    Throwable thrown = catchThrowable(() -> assertThat(actual).contains(values));
     // THEN
-    then(throwable).isInstanceOf(NullPointerException.class)
-                   .hasMessage(shouldNotBeNull("values").create());
+    then(thrown).isInstanceOf(NullPointerException.class)
+                .hasMessage(shouldNotBeNull("values").create());
   }
 
   @Test
@@ -62,10 +61,10 @@ class RangeSetAssert_contains_Test {
     RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 1));
     Integer[] values = {};
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).contains(values));
+    Throwable thrown = catchThrowable(() -> assertThat(actual).contains(values));
     // THEN
-    then(throwable).isInstanceOf(IllegalArgumentException.class)
-                   .hasMessage("Expecting values not to be empty");
+    then(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Expecting values not to be empty");
   }
 
   @Test
@@ -82,7 +81,7 @@ class RangeSetAssert_contains_Test {
   @Test
   void should_pass_if_both_actual_and_values_are_empty() {
     // GIVEN
-    RangeSet<Integer> actual = create();
+    RangeSet<Integer> actual = ImmutableRangeSet.of();
     Integer[] values = {};
     // WHEN/THEN
     assertThat(actual).contains(values);
