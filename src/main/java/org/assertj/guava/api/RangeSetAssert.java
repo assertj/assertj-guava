@@ -16,6 +16,7 @@ import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
+import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
@@ -298,8 +299,12 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} is not {@code null} or not empty.
    */
   public RangeSetAssert<T> isNullOrEmpty() {
-    rangeSets.assertNullOrEmpty(info, actual);
+    assertNullOrEmpty();
     return myself;
+  }
+
+  private void assertNullOrEmpty() {
+    if (actual != null && !actual.isEmpty()) throwAssertionError(shouldBeNullOrEmpty(actual));
   }
 
   /**

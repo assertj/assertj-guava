@@ -53,7 +53,7 @@ class RangeSetAssert_isNotEmpty_Test {
   void should_pass_if_actual_is_not_empty() {
     // GIVEN
     RangeSet<Integer> actual = ImmutableRangeSet.of(Range.closed(1, 10));
-    // THEN
+    // WHEN/THEN
     assertThat(actual).isNotEmpty();
   }
 

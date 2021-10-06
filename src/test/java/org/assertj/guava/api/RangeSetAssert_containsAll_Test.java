@@ -84,7 +84,7 @@ class RangeSetAssert_containsAll_Test {
     // GIVEN
     RangeSet<Integer> actual = ImmutableRangeSet.of();
     Iterable<Integer> values = iterable();
-    // THEN
+    // WHEN/THEN
     assertThat(actual).containsAll(values);
   }
 
@@ -93,7 +93,7 @@ class RangeSetAssert_containsAll_Test {
     // GIVEN
     RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 10));
     Iterable<Integer> values = iterable(0, 1, 2, 3, 4);
-    // THEN
+    // WHEN/THEN
     assertThat(actual).containsAll(values);
   }
 
@@ -102,7 +102,7 @@ class RangeSetAssert_containsAll_Test {
     // GIVEN
     RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 10));
     Iterable<Integer> values = iterable(1, 1, 5, 5, 10, 10);
-    // THEN
+    // WHEN/THEN
     assertThat(actual).containsAll(values);
   }
 

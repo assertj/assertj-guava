@@ -14,7 +14,6 @@ package org.assertj.guava.internal;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
-import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
 import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 import static org.assertj.core.internal.CommonValidations.checkSizes;
@@ -237,18 +236,6 @@ public class RangeSets {
     if (!nonIntersectedRanges.isEmpty()) {
       throw failures.failure(info, shouldIntersect(actual, ranges, nonIntersectedRanges));
     }
-  }
-
-  /**
-   * Asserts that the given {@code RangeSet} is {@code null} or empty.
-   *
-   * @param <T> the type of rangeset elements
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @throws AssertionError if the actual {@code RangeSet} is not {@code null} or not empty.
-   */
-  public <T extends Comparable<T>> void assertNullOrEmpty(AssertionInfo info, RangeSet<T> actual) {
-    if (actual != null && !actual.isEmpty()) throw failures.failure(info, shouldBeNullOrEmpty(actual));
   }
 
   /**
