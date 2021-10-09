@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.toList;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
 import static org.assertj.core.util.IterableUtil.toArray;
@@ -68,9 +69,15 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual size of {@code RangeSet} is different from the expected {@code size}.
    */
-  public RangeSetAssert<T> hasSize(final int size) {
-    rangeSets.assertHasSize(info, actual, size);
+  public RangeSetAssert<T> hasSize(int size) {
+    isNotNull();
+    assertHasSize(size);
     return myself;
+  }
+
+  private void assertHasSize(int expectedSize) {
+    int actualSize = actual.asRanges().size();
+    if (actualSize != expectedSize) throwAssertionError(shouldHaveSize(actual, actualSize, expectedSize));
   }
 
   /**

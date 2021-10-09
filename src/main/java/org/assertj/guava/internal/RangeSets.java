@@ -16,12 +16,10 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
 import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
-import static org.assertj.core.internal.CommonValidations.checkSizes;
 import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsEmpty;
 import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsNull;
 import static org.assertj.core.internal.ErrorMessages.valuesToLookForIsEmpty;
 import static org.assertj.core.internal.ErrorMessages.valuesToLookForIsNull;
-import static org.assertj.core.util.IterableUtil.sizeOf;
 import static org.assertj.core.util.IterableUtil.toArray;
 import static org.assertj.guava.error.RangeSetShouldEnclose.shouldEnclose;
 import static org.assertj.guava.error.RangeSetShouldEncloseAnyOf.shouldEncloseAnyOf;
@@ -62,18 +60,6 @@ public class RangeSets {
    */
   public static RangeSets instance() {
     return INSTANCE;
-  }
-
-  /**
-   * Asserts that the actual {@code RangeSet} has specific {@code size}.
-   *
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @param size expected size
-   */
-  public void assertHasSize(AssertionInfo info, RangeSet<?> actual, int size) {
-    assertNotNull(info, actual);
-    checkSizes(actual, sizeOf(actual.asRanges()), size, info);
   }
 
   /**
