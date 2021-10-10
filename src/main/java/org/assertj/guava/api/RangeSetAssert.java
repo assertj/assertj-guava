@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.toList;
 import static org.assertj.core.error.ShouldBeEmpty.shouldBeEmpty;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.core.error.ShouldContain.shouldContain;
+import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
@@ -97,7 +98,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} does not contain the given {@code values}.
-   * @throws IllegalArgumentException if values are null or values are empty while actual is not empty.
+   * @throws NullPointerException if values are null.
+   * @throws IllegalArgumentException if values are empty while actual is not empty.
    */
   @SafeVarargs
   public final RangeSetAssert<T> contains(T... values) {
@@ -130,7 +132,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} does not contain all the given {@code values}.
-   * @throws IllegalArgumentException if values are null or values are empty while actual is not empty.
+   * @throws NullPointerException if values are null.
+   * @throws IllegalArgumentException if values are empty while actual is not empty.
    */
   public RangeSetAssert<T> containsAll(Iterable<T> values) {
     isNotNull();
@@ -145,8 +148,14 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     assertRangeSetContainsGivenValues(actual, toArray(values, Comparable.class));
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  private void assertRangeSetContainsGivenValues(RangeSet actual, Comparable[] values) {
+    final List<?> elementsNotFound = stream(values).filter(value -> !actual.contains(value)).collect(toList());
+    if (!elementsNotFound.isEmpty()) throwAssertionError(shouldContain(actual, values, elementsNotFound));
+  }
+
   /**
-   * Verifies that the given {@code RangeSet} contains at least one of the given ranges.
+   * Verifies that the given {@code RangeSet} contains at least one of the given values.
    * <p>
    * Example:
    *
@@ -158,16 +167,26 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    *
    * assertThat(rangeSet).containsAnyOf(150, 250, 700);</code></pre>
    *
-   * @param ranges the ranges to look for in actual {@code RangeSet}.
+   * @param values the values to look for in actual {@code RangeSet}.
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not contain at least one of the given {@code ranges}.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
+   * @throws AssertionError if the actual {@code RangeSet} does not contain at least one of the given {@code values}.
+   * @throws NullPointerException if values are null.
+   * @throws IllegalArgumentException if values are empty while actual is not empty.
    */
   @SafeVarargs
-  public final RangeSetAssert<T> containsAnyOf(final T... ranges) {
-    rangeSets.assertContainsAnyOf(info, actual, ranges);
+  public final RangeSetAssert<T> containsAnyOf(T... values) {
+    isNotNull();
+    assertContainsAnyOf(values);
     return myself;
+  }
+
+  private void assertContainsAnyOf(T[] values) {
+    requireNonNull(values, shouldNotBeNull("values")::create);
+    // Should pass if both actual and expected are empty
+    if (actual.isEmpty() && values.length == 0) return;
+    failIfEmpty(values);
+    assertRangeSetContainsAnyGivenValues(actual, values);
   }
 
   /**
@@ -791,11 +810,9 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   }
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  private void assertRangeSetContainsGivenValues(RangeSet actual, Comparable[] values) {
-    final List<?> elementsNotFound = stream(values).filter(value -> !actual.contains(value)).collect(toList());
-    if (!elementsNotFound.isEmpty()) {
-      throwAssertionError(shouldContain(actual, values, elementsNotFound));
-    }
+  private void assertRangeSetContainsAnyGivenValues(RangeSet actual, Comparable[] values) {
+    final boolean match = stream(values).anyMatch(actual::contains);
+    if (!match) throwAssertionError(shouldContainAnyOf(actual, values));
   }
 
   private static <T> void failIfEmpty(T[] array) {

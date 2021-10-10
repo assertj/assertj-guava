@@ -36,9 +36,8 @@ class RangeSetAssert_contains_Test {
   void should_fail_if_actual_is_null() {
     // GIVEN
     RangeSet<Integer> actual = null;
-    Integer[] values = { 1 };
     // WHEN
-    AssertionError error = expectAssertionError(() -> assertThat(actual).contains(values));
+    AssertionError error = expectAssertionError(() -> assertThat(actual).contains(1));
     // THEN
     then(error).hasMessage(actualIsNull());
   }

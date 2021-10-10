@@ -63,26 +63,6 @@ public class RangeSets {
   }
 
   /**
-   * Asserts that the given {@code RangeSet} contains at least one of the given values.
-   *
-   * @param <T> the type of rangeset elements
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @param values the values that are expected to be in the given {@code RangeSet}.
-   * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not contain at least one of the given {@code elements}.
-   * @throws IllegalArgumentException if elements are null or elements are empty while actual is not empty.
-   */
-  public <T extends Comparable<T>> void assertContainsAnyOf(AssertionInfo info, RangeSet<T> actual, T[] values) {
-    assertNotNull(info, actual);
-    failIfNull(values);
-    // Should pass if both actual and expected are empty
-    if (actual.isEmpty() && values.length == 0) return;
-    failIfEmpty(values);
-    assertRangeSetContainsAnyGivenValues(info, actual, values);
-  }
-
-  /**
    * Asserts that the given {@code RangeSet} contains at least one element of the given values.
    *
    * @param <T> the type of rangeset elements
