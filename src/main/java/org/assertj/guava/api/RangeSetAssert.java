@@ -190,7 +190,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   }
 
   /**
-   * Verifies that the given {@code RangeSet} contains at least one of the given ranges.
+   * Verifies that the given {@code RangeSet} contains at least one of the given values.
    * <p>
    * Example:
    *
@@ -202,15 +202,30 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    *
    * assertThat(rangeSet).containsAnyRangesOf(Arrays.asList(150, 250, 700));</code></pre>
    *
-   * @param ranges the ranges to look for in actual {@code RangeSet}.
+   * @param values the values to look for in actual {@code RangeSet}.
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not contain at least one of the given {@code ranges}.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
+   * @throws AssertionError if the actual {@code RangeSet} does not contain at least one of the given {@code values}.
+   * @throws NullPointerException if values are null.
+   * @throws IllegalArgumentException if values are empty while actual is not empty.
    */
-  public RangeSetAssert<T> containsAnyRangesOf(final Iterable<T> ranges) {
-    rangeSets.assertContainsAnyRangesOf(info, actual, ranges);
+  public RangeSetAssert<T> containsAnyRangesOf(final Iterable<T> values) {
+    isNotNull();
+    assertContainsAnyRangesOf(values);
     return myself;
+  }
+
+  private void assertContainsAnyRangesOf(Iterable<T> values) {
+    requireNonNull(values, shouldNotBeNull("values")::create);
+    if (actual.isEmpty() && !values.iterator().hasNext()) return;
+    failIfEmpty(values);
+    assertRangeSetContainsAnyGivenValues(actual, toArray(values, Comparable.class));
+  }
+
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  private void assertRangeSetContainsAnyGivenValues(RangeSet actual, Comparable[] values) {
+    final boolean match = stream(values).anyMatch(actual::contains);
+    if (!match) throwAssertionError(shouldContainAnyOf(actual, values));
   }
 
   /**
@@ -807,12 +822,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   public RangeSetAssert<T> doesNotEncloseAnyRangesOf(final RangeSet<T> rangeSet) {
     rangeSets.doesNotEncloseAnyRangesOf(info, actual, rangeSet);
     return myself;
-  }
-
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  private void assertRangeSetContainsAnyGivenValues(RangeSet actual, Comparable[] values) {
-    final boolean match = stream(values).anyMatch(actual::contains);
-    if (!match) throwAssertionError(shouldContainAnyOf(actual, values));
   }
 
   private static <T> void failIfEmpty(T[] array) {

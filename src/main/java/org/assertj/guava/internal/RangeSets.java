@@ -14,7 +14,6 @@ package org.assertj.guava.internal;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
-import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
 import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsEmpty;
 import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsNull;
@@ -60,34 +59,6 @@ public class RangeSets {
    */
   public static RangeSets instance() {
     return INSTANCE;
-  }
-
-  /**
-   * Asserts that the given {@code RangeSet} contains at least one element of the given values.
-   *
-   * @param <T> the type of rangeset elements
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @param values the values that are expected to be in the given {@code RangeSet}.
-   * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not contain at least one element of the given
-   *                        {@code values}.
-   * @throws IllegalArgumentException if elements are null or elements are empty while actual is not empty.
-   */
-  public <T extends Comparable<T>> void assertContainsAnyRangesOf(AssertionInfo info, RangeSet<T> actual,
-                                                                  Iterable<? extends T> values) {
-    assertNotNull(info, actual);
-    failIfNull(values);
-    // Should pass if both actual and expected are empty
-    if (actual.isEmpty() && !values.iterator().hasNext()) return;
-    failIfEmpty(values);
-    assertRangeSetContainsAnyGivenValues(info, actual, toArray(values, Comparable.class));
-  }
-
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  private void assertRangeSetContainsAnyGivenValues(AssertionInfo info, RangeSet actual, Comparable[] values) {
-    final boolean match = stream(values).anyMatch(actual::contains);
-    if (!match) throw failures.failure(info, shouldContainAnyOf(actual, values));
   }
 
   /**

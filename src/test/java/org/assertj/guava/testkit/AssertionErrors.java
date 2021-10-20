@@ -1,4 +1,4 @@
-package org.assertj.guava.test;
+package org.assertj.guava.testkit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;

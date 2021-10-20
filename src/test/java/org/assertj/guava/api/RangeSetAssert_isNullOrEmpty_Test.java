@@ -16,7 +16,7 @@ import static com.google.common.collect.Range.closed;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.error.ShouldBeNullOrEmpty.shouldBeNullOrEmpty;
 import static org.assertj.guava.api.Assertions.assertThat;
-import static org.assertj.guava.test.AssertionErrors.expectAssertionError;
+import static org.assertj.guava.testkit.AssertionErrors.expectAssertionError;
 
 import org.junit.jupiter.api.Test;
 

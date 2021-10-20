@@ -20,7 +20,7 @@ import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
 import static org.assertj.core.util.Arrays.array;
 import static org.assertj.core.util.FailureMessages.actualIsNull;
 import static org.assertj.guava.api.Assertions.assertThat;
-import static org.assertj.guava.test.AssertionErrors.expectAssertionError;
+import static org.assertj.guava.testkit.AssertionErrors.expectAssertionError;
 
 import org.junit.jupiter.api.Test;
 
@@ -63,7 +63,7 @@ class RangeSetAssert_containsAnyOf_Test {
     Throwable thrown = catchThrowable(() -> assertThat(actual).containsAnyOf(values));
     // THEN
     then(thrown).isInstanceOf(IllegalArgumentException.class)
-      .hasMessage("Expecting values not to be empty");
+                .hasMessage("Expecting values not to be empty");
   }
 
   @Test
