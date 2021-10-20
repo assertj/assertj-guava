@@ -22,6 +22,7 @@ import static org.assertj.core.error.ShouldContainAnyOf.shouldContainAnyOf;
 import static org.assertj.core.error.ShouldHaveSize.shouldHaveSize;
 import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
+import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 import static org.assertj.core.util.IterableUtil.toArray;
 
 import java.util.List;
@@ -229,7 +230,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   }
 
   /**
-   * Verifies that the given {@code RangeSet} does not contain any of the given ranges.
+   * Verifies that the given {@code RangeSet} does not contain any of the given values.
    * <p>
    * Example:
    *
@@ -241,16 +242,30 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    *
    * assertThat(rangeSet).doesNotContain(150, 320, 650);</code></pre>
    *
-   * @param ranges the ranges that should not be present in actual {@code RangeSet}
+   * @param values the values that should not be present in actual {@code RangeSet}
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} contains any of the given {@code ranges}.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty.
+   * @throws AssertionError if the actual {@code RangeSet} contains any of the given {@code values}.
+   * @throws NullPointerException if values are null.
+   * @throws IllegalArgumentException if values are empty.
    */
   @SafeVarargs
-  public final RangeSetAssert<T> doesNotContain(final T... ranges) {
-    rangeSets.assertDoesNotContain(info, actual, ranges);
+  public final RangeSetAssert<T> doesNotContain(final T... values) {
+    isNotNull();
+    assertDoesNotContain(values);
     return myself;
+  }
+
+  private void assertDoesNotContain(T[] values) {
+    requireNonNull(values, shouldNotBeNull("values")::create);
+    failIfEmpty(values);
+    assertRangeSetDoesNotContainGivenValues(actual, values);
+  }
+
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  private void assertRangeSetDoesNotContainGivenValues(RangeSet actual, Comparable[] values) {
+    final List<?> elementsFound = stream(values).filter(actual::contains).collect(toList());
+    if (!elementsFound.isEmpty()) throwAssertionError(shouldNotContain(actual, values, elementsFound));
   }
 
   /**
