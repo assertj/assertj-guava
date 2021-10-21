@@ -14,7 +14,6 @@ package org.assertj.guava.internal;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
-import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsEmpty;
 import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsNull;
 import static org.assertj.core.internal.ErrorMessages.valuesToLookForIsEmpty;
@@ -59,32 +58,6 @@ public class RangeSets {
    */
   public static RangeSets instance() {
     return INSTANCE;
-  }
-
-  /**
-   * Asserts that the given {@code RangeSet} does not contain any elements of the given values.
-   *
-   * @param <T> the type of rangeset elements
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @param values the values that are expected not to be in the given {@code RangeSet}.
-   * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} contains at least one element of the given {@code values}.
-   * @throws IllegalArgumentException if values are null or values are empty.
-   */
-  public <T extends Comparable<T>> void assertDoesNotContainAll(AssertionInfo info, RangeSet<T> actual,
-                                                                Iterable<? extends T> values) {
-    assertNotNull(info, actual);
-    failIfNullOrEmpty(values);
-    assertRangeSetDoesNotContainGivenValues(info, actual, toArray(values, Comparable.class));
-  }
-
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  private void assertRangeSetDoesNotContainGivenValues(AssertionInfo info, RangeSet actual, Comparable[] values) {
-    final List<?> elementsFound = stream(values).filter(actual::contains).collect(toList());
-    if (!elementsFound.isEmpty()) {
-      throw failures.failure(info, shouldNotContain(actual, values, elementsFound));
-    }
   }
 
   /**

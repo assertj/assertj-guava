@@ -210,7 +210,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws NullPointerException if values are null.
    * @throws IllegalArgumentException if values are empty while actual is not empty.
    */
-  public RangeSetAssert<T> containsAnyRangesOf(final Iterable<T> values) {
+  public RangeSetAssert<T> containsAnyRangesOf(Iterable<T> values) {
     isNotNull();
     assertContainsAnyRangesOf(values);
     return myself;
@@ -250,7 +250,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws IllegalArgumentException if values are empty.
    */
   @SafeVarargs
-  public final RangeSetAssert<T> doesNotContain(final T... values) {
+  public final RangeSetAssert<T> doesNotContain(T... values) {
     isNotNull();
     assertDoesNotContain(values);
     return myself;
@@ -262,14 +262,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     assertRangeSetDoesNotContainGivenValues(actual, values);
   }
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  private void assertRangeSetDoesNotContainGivenValues(RangeSet actual, Comparable[] values) {
-    final List<?> elementsFound = stream(values).filter(actual::contains).collect(toList());
-    if (!elementsFound.isEmpty()) throwAssertionError(shouldNotContain(actual, values, elementsFound));
-  }
-
   /**
-   * Verifies that the given {@code RangeSet} does not contain any of the given ranges.
+   * Verifies that the given {@code RangeSet} does not contain any of the given values.
    * <p>
    * Example:
    *
@@ -281,15 +275,29 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    *
    * assertThat(rangeSet).doesNotContain(Arrays.asList(150, 320, 650));</code></pre>
    *
-   * @param ranges the ranges that should not be present in actual {@code RangeSet}
+   * @param values the values that should not be present in actual {@code RangeSet}
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} contains any of the given {@code ranges}.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty.
+   * @throws AssertionError if the actual {@code RangeSet} contains any of the given {@code values}.
+   * @throws NullPointerException if values are null.
+   * @throws IllegalArgumentException if values are empty.
    */
-  public RangeSetAssert<T> doesNotContainAll(final Iterable<T> ranges) {
-    rangeSets.assertDoesNotContainAll(info, actual, ranges);
+  public RangeSetAssert<T> doesNotContainAll(Iterable<T> values) {
+    isNotNull();
+    assertDoesNotContainAll(values);
     return myself;
+  }
+
+  private void assertDoesNotContainAll(Iterable<T> values) {
+    requireNonNull(values, shouldNotBeNull("values")::create);
+    failIfEmpty(values);
+    assertRangeSetDoesNotContainGivenValues(actual, toArray(values, Comparable.class));
+  }
+
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  private void assertRangeSetDoesNotContainGivenValues(RangeSet actual, Comparable[] values) {
+    final List<?> elementsFound = stream(values).filter(actual::contains).collect(toList());
+    if (!elementsFound.isEmpty()) throwAssertionError(shouldNotContain(actual, values, elementsFound));
   }
 
   /**

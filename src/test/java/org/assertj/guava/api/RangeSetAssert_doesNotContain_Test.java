@@ -49,10 +49,10 @@ class RangeSetAssert_doesNotContain_Test {
     RangeSet<Integer> actual = ImmutableRangeSet.of();
     Integer[] values = null;
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotContain(values));
+    Throwable thrown = catchThrowable(() -> assertThat(actual).doesNotContain(values));
     // THEN
-    then(throwable).isInstanceOf(NullPointerException.class)
-                   .hasMessage(shouldNotBeNull("values").create());
+    then(thrown).isInstanceOf(NullPointerException.class)
+                .hasMessage(shouldNotBeNull("values").create());
   }
 
   @Test
@@ -61,10 +61,10 @@ class RangeSetAssert_doesNotContain_Test {
     RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 1));
     Integer[] values = {};
     // WHEN
-    Throwable throwable = catchThrowable(() -> assertThat(actual).doesNotContain(values));
+    Throwable thrown = catchThrowable(() -> assertThat(actual).doesNotContain(values));
     // THEN
-    assertThat(throwable).isInstanceOf(IllegalArgumentException.class)
-                         .hasMessage("Expecting values not to be empty");
+    assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
+                      .hasMessage("Expecting values not to be empty");
   }
 
   @Test
@@ -82,9 +82,8 @@ class RangeSetAssert_doesNotContain_Test {
   void should_pass_if_actual_does_not_contain_values() {
     // GIVEN
     RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 3));
-    Integer[] values = array(4, 5);
     // WHEN/THEN
-    assertThat(actual).doesNotContain(values);
+    assertThat(actual).doesNotContain(4, 5);
   }
 
 }
