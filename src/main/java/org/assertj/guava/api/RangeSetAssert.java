@@ -146,7 +146,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   private void assertContainsAll(Iterable<T> values) {
     requireNonNull(values, shouldNotBeNull("values")::create);
     if (actual.isEmpty() && !values.iterator().hasNext()) return;
-    failIfEmpty(values);
+    failIfEmpty(values, "values");
     assertRangeSetContainsGivenValues(actual, toArray(values, Comparable.class));
   }
 
@@ -220,7 +220,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   private void assertContainsAnyRangesOf(Iterable<T> values) {
     requireNonNull(values, shouldNotBeNull("values")::create);
     if (actual.isEmpty() && !values.iterator().hasNext()) return;
-    failIfEmpty(values);
+    failIfEmpty(values, "values");
     assertRangeSetContainsAnyGivenValues(actual, toArray(values, Comparable.class));
   }
 
@@ -291,7 +291,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
 
   private void assertDoesNotContainAll(Iterable<T> values) {
     requireNonNull(values, shouldNotBeNull("values")::create);
-    failIfEmpty(values);
+    failIfEmpty(values, "values");
     assertRangeSetDoesNotContainGivenValues(actual, toArray(values, Comparable.class));
   }
 
@@ -624,10 +624,11 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} does not enclose the given ranges.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
+   * @throws NullPointerException if ranges are null.
+   * @throws IllegalArgumentException if ranges are empty while actual is not empty.
    */
   @SafeVarargs
-  public final RangeSetAssert<T> encloses(final Range<T>... ranges) {
+  public final RangeSetAssert<T> encloses(Range<T>... ranges) {
     isNotNull();
     assertEncloses(ranges);
     return myself;
@@ -638,11 +639,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     if (actual.isEmpty() && ranges.length == 0) return;
     failIfEmpty(ranges, "ranges");
     assertRangeSetEnclosesGivenValues(actual, ranges);
-  }
-
-  private void assertRangeSetEnclosesGivenValues(RangeSet<T> actual, Range<T>[] ranges) {
-    List<?> notEnclosed = stream(ranges).filter(range -> !actual.encloses(range)).collect(toList());
-    if (!notEnclosed.isEmpty()) throwAssertionError(shouldEnclose(actual, ranges, notEnclosed));
   }
 
   /**
@@ -664,11 +660,21 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} does not enclose all the given ranges.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
+   * @throws NullPointerException if ranges are null.
+   * @throws IllegalArgumentException if ranges are empty while actual is not empty.
    */
-  public RangeSetAssert<T> enclosesAll(final Iterable<Range<T>> ranges) {
-    rangeSets.assertEnclosesAll(info, actual, ranges);
+  public RangeSetAssert<T> enclosesAll(Iterable<Range<T>> ranges) {
+    isNotNull();
+    assertEnclosesAll(ranges);
     return myself;
+  }
+
+  @SuppressWarnings("unchecked")
+  private void assertEnclosesAll(Iterable<Range<T>> ranges) {
+    requireNonNull(ranges, shouldNotBeNull("ranges")::create);
+    if (actual.isEmpty() && !ranges.iterator().hasNext()) return;
+    failIfEmpty(ranges, "ranges");
+    assertRangeSetEnclosesGivenValues(actual, toArray(ranges, Range.class));
   }
 
   /**
@@ -688,11 +694,26 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} does not enclose all ranges from the given range set.
-   * @throws IllegalArgumentException if range set is null or it is empty while actual is not empty.
+   * @throws NullPointerException if range set is null.
+   * @throws IllegalArgumentException if range set is empty while actual is not empty.
    */
-  public RangeSetAssert<T> enclosesAll(final RangeSet<T> rangeSet) {
-    rangeSets.assertEnclosesAll(info, actual, rangeSet);
+  public RangeSetAssert<T> enclosesAll(RangeSet<T> rangeSet) {
+    isNotNull();
+    assertEnclosesAll(rangeSet);
     return myself;
+  }
+
+  @SuppressWarnings("unchecked")
+  private void assertEnclosesAll(RangeSet<T> rangeSet) {
+    requireNonNull(rangeSet, shouldNotBeNull("rangeSet")::create);
+    if (actual.isEmpty() && rangeSet.isEmpty()) return;
+    failIfEmpty(rangeSet);
+    assertRangeSetEnclosesGivenValues(actual, toArray(rangeSet.asRanges(), Range.class));
+  }
+
+  private void assertRangeSetEnclosesGivenValues(RangeSet<T> actual, Range<T>[] ranges) {
+    List<?> notEnclosed = stream(ranges).filter(range -> !actual.encloses(range)).collect(toList());
+    if (!notEnclosed.isEmpty()) throwAssertionError(shouldEnclose(actual, ranges, notEnclosed));
   }
 
   /**
@@ -865,8 +886,12 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     if (array.length == 0) throw new IllegalArgumentException("Expecting " + label + " not to be empty");
   }
 
-  private static <T> void failIfEmpty(Iterable<T> iterable) {
-    if (!iterable.iterator().hasNext()) throw new IllegalArgumentException("Expecting values not to be empty");
+  private static <T> void failIfEmpty(Iterable<T> iterable, String label) {
+    if (!iterable.iterator().hasNext()) throw new IllegalArgumentException("Expecting " + label + " not to be empty");
+  }
+
+  private static <T> void failIfEmpty(RangeSet<?> rangeSet) {
+    if (rangeSet.isEmpty()) throw new IllegalArgumentException("Expecting rangeSet not to be empty");
   }
 
 }
