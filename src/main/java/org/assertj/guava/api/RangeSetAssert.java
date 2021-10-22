@@ -24,6 +24,7 @@ import static org.assertj.core.error.ShouldNotBeEmpty.shouldNotBeEmpty;
 import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
 import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 import static org.assertj.core.util.IterableUtil.toArray;
+import static org.assertj.guava.error.RangeSetShouldEnclose.shouldEnclose;
 
 import java.util.List;
 
@@ -112,7 +113,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
   private void assertContains(T[] values) {
     requireNonNull(values, shouldNotBeNull("values")::create);
     if (actual.isEmpty() && values.length == 0) return;
-    failIfEmpty(values);
+    failIfEmpty(values, "values");
     assertRangeSetContainsGivenValues(actual, values);
   }
 
@@ -151,7 +152,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   private void assertRangeSetContainsGivenValues(RangeSet actual, Comparable[] values) {
-    final List<?> elementsNotFound = stream(values).filter(value -> !actual.contains(value)).collect(toList());
+    List<?> elementsNotFound = stream(values).filter(value -> !actual.contains(value)).collect(toList());
     if (!elementsNotFound.isEmpty()) throwAssertionError(shouldContain(actual, values, elementsNotFound));
   }
 
@@ -186,7 +187,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     requireNonNull(values, shouldNotBeNull("values")::create);
     // Should pass if both actual and expected are empty
     if (actual.isEmpty() && values.length == 0) return;
-    failIfEmpty(values);
+    failIfEmpty(values, "values");
     assertRangeSetContainsAnyGivenValues(actual, values);
   }
 
@@ -225,7 +226,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   private void assertRangeSetContainsAnyGivenValues(RangeSet actual, Comparable[] values) {
-    final boolean match = stream(values).anyMatch(actual::contains);
+    boolean match = stream(values).anyMatch(actual::contains);
     if (!match) throwAssertionError(shouldContainAnyOf(actual, values));
   }
 
@@ -258,7 +259,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
 
   private void assertDoesNotContain(T[] values) {
     requireNonNull(values, shouldNotBeNull("values")::create);
-    failIfEmpty(values);
+    failIfEmpty(values, "values");
     assertRangeSetDoesNotContainGivenValues(actual, values);
   }
 
@@ -296,7 +297,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   private void assertRangeSetDoesNotContainGivenValues(RangeSet actual, Comparable[] values) {
-    final List<?> elementsFound = stream(values).filter(actual::contains).collect(toList());
+    List<?> elementsFound = stream(values).filter(actual::contains).collect(toList());
     if (!elementsFound.isEmpty()) throwAssertionError(shouldNotContain(actual, values, elementsFound));
   }
 
@@ -627,8 +628,21 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    */
   @SafeVarargs
   public final RangeSetAssert<T> encloses(final Range<T>... ranges) {
-    rangeSets.assertEncloses(info, actual, ranges);
+    isNotNull();
+    assertEncloses(ranges);
     return myself;
+  }
+
+  private void assertEncloses(Range<T>[] ranges) {
+    requireNonNull(ranges, shouldNotBeNull("ranges")::create);
+    if (actual.isEmpty() && ranges.length == 0) return;
+    failIfEmpty(ranges, "ranges");
+    assertRangeSetEnclosesGivenValues(actual, ranges);
+  }
+
+  private void assertRangeSetEnclosesGivenValues(RangeSet<T> actual, Range<T>[] ranges) {
+    List<?> notEnclosed = stream(ranges).filter(range -> !actual.encloses(range)).collect(toList());
+    if (!notEnclosed.isEmpty()) throwAssertionError(shouldEnclose(actual, ranges, notEnclosed));
   }
 
   /**
@@ -847,8 +861,8 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     return myself;
   }
 
-  private static <T> void failIfEmpty(T[] array) {
-    if (array.length == 0) throw new IllegalArgumentException("Expecting values not to be empty");
+  private static <T> void failIfEmpty(T[] array, String label) {
+    if (array.length == 0) throw new IllegalArgumentException("Expecting " + label + " not to be empty");
   }
 
   private static <T> void failIfEmpty(Iterable<T> iterable) {
