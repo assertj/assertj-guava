@@ -25,21 +25,20 @@ import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
 import static org.assertj.core.error.ShouldNotContain.shouldNotContain;
 import static org.assertj.core.util.IterableUtil.toArray;
 import static org.assertj.guava.error.RangeSetShouldEnclose.shouldEnclose;
+import static org.assertj.guava.error.RangeSetShouldEncloseAnyOf.shouldEncloseAnyOf;
 
 import java.util.List;
 
 import org.assertj.core.api.AbstractAssert;
-import org.assertj.core.util.VisibleForTesting;
 import org.assertj.guava.internal.RangeSets;
 
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeSet;
 
 /**
- * Assertion for guava {@link com.google.common.collect.RangeSet}.
+ * Assertion for guava {@link RangeSet}.
  * <p>
- * To create an instance of this class, invoke <code>{@link
- * org.assertj.guava.api.Assertions#assertThat(com.google.common.collect.RangeSet)}</code>
+ * To create an instance of this class, invoke <code>{@link Assertions#assertThat(RangeSet)}</code>.
  * <p>
  *
  * @param <T> the type of the tested RangeSet elements
@@ -47,8 +46,7 @@ import com.google.common.collect.RangeSet;
  */
 public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<RangeSetAssert<T>, RangeSet<T>> {
 
-  @VisibleForTesting
-  RangeSets rangeSets = RangeSets.instance();
+  private final RangeSets rangeSets = RangeSets.instance();
 
   protected RangeSetAssert(RangeSet<T> actual) {
     super(actual, RangeSetAssert.class);
@@ -638,7 +636,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     requireNonNull(ranges, shouldNotBeNull("ranges")::create);
     if (actual.isEmpty() && ranges.length == 0) return;
     failIfEmpty(ranges, "ranges");
-    assertRangeSetEnclosesGivenValues(actual, ranges);
+    assertRangeSetEnclosesGivenValues(ranges);
   }
 
   /**
@@ -674,7 +672,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     requireNonNull(ranges, shouldNotBeNull("ranges")::create);
     if (actual.isEmpty() && !ranges.iterator().hasNext()) return;
     failIfEmpty(ranges, "ranges");
-    assertRangeSetEnclosesGivenValues(actual, toArray(ranges, Range.class));
+    assertRangeSetEnclosesGivenValues(toArray(ranges, Range.class));
   }
 
   /**
@@ -708,10 +706,10 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     requireNonNull(rangeSet, shouldNotBeNull("rangeSet")::create);
     if (actual.isEmpty() && rangeSet.isEmpty()) return;
     failIfEmpty(rangeSet);
-    assertRangeSetEnclosesGivenValues(actual, toArray(rangeSet.asRanges(), Range.class));
+    assertRangeSetEnclosesGivenValues(toArray(rangeSet.asRanges(), Range.class));
   }
 
-  private void assertRangeSetEnclosesGivenValues(RangeSet<T> actual, Range<T>[] ranges) {
+  private void assertRangeSetEnclosesGivenValues(Range<T>[] ranges) {
     List<?> notEnclosed = stream(ranges).filter(range -> !actual.encloses(range)).collect(toList());
     if (!notEnclosed.isEmpty()) throwAssertionError(shouldEnclose(actual, ranges, notEnclosed));
   }
@@ -735,12 +733,26 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} does not enclose at least one of the given ranges.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
+   * @throws NullPointerException if ranges are null.
+   * @throws IllegalArgumentException if ranges are empty while actual is not empty.
    */
   @SafeVarargs
-  public final RangeSetAssert<T> enclosesAnyOf(final Range<T>... ranges) {
-    rangeSets.assertEnclosesAnyOf(info, actual, ranges);
+  public final RangeSetAssert<T> enclosesAnyOf(Range<T>... ranges) {
+    isNotNull();
+    assertEnclosesAnyOf(ranges);
     return myself;
+  }
+
+  private void assertEnclosesAnyOf(Range<T>[] ranges) {
+    requireNonNull(ranges, shouldNotBeNull("ranges")::create);
+    if (actual.isEmpty() && ranges.length == 0) return;
+    failIfEmpty(ranges, "ranges");
+    assertRangeSetEnclosesAnyOfGivenValues(ranges);
+  }
+
+  private void assertRangeSetEnclosesAnyOfGivenValues(Range<T>[] ranges) {
+    boolean match = stream(ranges).anyMatch(actual::encloses);
+    if (!match) throwAssertionError(shouldEncloseAnyOf(actual, ranges));
   }
 
   /**
