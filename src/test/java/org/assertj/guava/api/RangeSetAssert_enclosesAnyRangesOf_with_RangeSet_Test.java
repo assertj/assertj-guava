@@ -18,9 +18,8 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
 import static org.assertj.core.util.FailureMessages.actualIsNull;
-import static org.assertj.core.util.Lists.list;
 import static org.assertj.guava.api.Assertions.assertThat;
-import static org.assertj.guava.error.RangeSetShouldEnclose.shouldEnclose;
+import static org.assertj.guava.error.RangeSetShouldEncloseAnyOf.shouldEncloseAnyOf;
 import static org.assertj.guava.testkit.AssertionErrors.expectAssertionError;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import com.google.common.collect.ImmutableRangeSet;
 import com.google.common.collect.RangeSet;
 
-class RangeSetAssert_enclosesAll_with_RangeSet_Test {
+class RangeSetAssert_enclosesAnyRangesOf_with_RangeSet_Test {
 
   @Test
   void should_fail_if_actual_is_null() {
@@ -36,7 +35,7 @@ class RangeSetAssert_enclosesAll_with_RangeSet_Test {
     RangeSet<Integer> actual = null;
     RangeSet<Integer> rangeSet = ImmutableRangeSet.of(closed(0, 1));
     // WHEN
-    AssertionError error = expectAssertionError(() -> assertThat(actual).enclosesAll(rangeSet));
+    AssertionError error = expectAssertionError(() -> assertThat(actual).enclosesAnyRangesOf(rangeSet));
     // THEN
     then(error).hasMessage(actualIsNull());
   }
@@ -47,7 +46,7 @@ class RangeSetAssert_enclosesAll_with_RangeSet_Test {
     RangeSet<Integer> actual = ImmutableRangeSet.of();
     RangeSet<Integer> rangeSet = null;
     // WHEN
-    Throwable thrown = catchThrowable(() -> assertThat(actual).enclosesAll(rangeSet));
+    Throwable thrown = catchThrowable(() -> assertThat(actual).enclosesAnyRangesOf(rangeSet));
     // THEN
     then(thrown).isInstanceOf(NullPointerException.class)
                 .hasMessage(shouldNotBeNull("rangeSet").create());
@@ -59,7 +58,7 @@ class RangeSetAssert_enclosesAll_with_RangeSet_Test {
     RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 1));
     RangeSet<Integer> rangeSet = ImmutableRangeSet.of();
     // WHEN
-    Throwable thrown = catchThrowable(() -> assertThat(actual).enclosesAll(rangeSet));
+    Throwable thrown = catchThrowable(() -> assertThat(actual).enclosesAnyRangesOf(rangeSet));
     // THEN
     then(thrown).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Expecting rangeSet not to be empty");
@@ -68,15 +67,15 @@ class RangeSetAssert_enclosesAll_with_RangeSet_Test {
   @Test
   void should_fail_if_actual_does_not_enclose_rangeSet() {
     // GIVEN
-    RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 100));
-    RangeSet<Integer> expected = ImmutableRangeSet.<Integer> builder()
-                                                  .add(closed(50, 70))
-                                                  .add(closed(120, 150))
+    RangeSet<Integer> actual = ImmutableRangeSet.of(open(0, 100));
+    RangeSet<Integer> rangeSet = ImmutableRangeSet.<Integer> builder()
+                                                  .add(closed(0, 10))
+                                                  .add(open(90, 110))
                                                   .build();
     // WHEN
-    AssertionError error = expectAssertionError(() -> assertThat(actual).enclosesAll(expected));
+    AssertionError error = expectAssertionError(() -> assertThat(actual).enclosesAnyRangesOf(rangeSet));
     // THEN
-    then(error).hasMessage(shouldEnclose(actual, expected, list(closed(120, 150))).create());
+    then(error).hasMessage(shouldEncloseAnyOf(actual, rangeSet).create());
   }
 
   @Test
@@ -85,20 +84,20 @@ class RangeSetAssert_enclosesAll_with_RangeSet_Test {
     RangeSet<Integer> actual = ImmutableRangeSet.of();
     RangeSet<Integer> rangeSet = ImmutableRangeSet.of();
     // WHEN/THEN
-    assertThat(actual).enclosesAll(rangeSet);
+    assertThat(actual).enclosesAnyRangesOf(rangeSet);
   }
 
   @Test
   void should_pass_if_actual_encloses_rangeSet() {
     // GIVEN
     RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 100));
-    RangeSet<Integer> rangeSet = ImmutableRangeSet.<Integer> builder()
-                                                  .add(closed(0, 10))
+    RangeSet<Integer> expected = ImmutableRangeSet.<Integer> builder()
+                                                  .add(open(0, 10))
                                                   .add(open(50, 60))
-                                                  .add(open(90, 100))
+                                                  .add(open(90, 110))
                                                   .build();
     // WHEN/THEN
-    assertThat(actual).enclosesAll(rangeSet);
+    assertThat(actual).enclosesAnyRangesOf(expected);
   }
 
 }
