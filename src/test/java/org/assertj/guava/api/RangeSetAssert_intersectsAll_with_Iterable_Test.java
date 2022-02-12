@@ -21,7 +21,7 @@ import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
 import static org.assertj.core.util.FailureMessages.actualIsNull;
 import static org.assertj.core.util.Lists.list;
 import static org.assertj.guava.api.Assertions.assertThat;
-import static org.assertj.guava.error.RangeSetShouldEnclose.shouldEnclose;
+import static org.assertj.guava.error.RangeSetShouldIntersect.shouldIntersect;
 import static org.assertj.guava.testkit.AssertionErrors.expectAssertionError;
 
 import java.util.List;
@@ -32,7 +32,10 @@ import com.google.common.collect.ImmutableRangeSet;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeSet;
 
-class RangeSetAssert_enclosesAll_with_Iterable_Test {
+/**
+ * @author Ilya Koshaleu
+ */
+class RangeSetAssert_intersectsAll_with_Iterable_Test {
 
   @Test
   void should_fail_if_actual_is_null() {
@@ -40,7 +43,7 @@ class RangeSetAssert_enclosesAll_with_Iterable_Test {
     RangeSet<Integer> actual = null;
     Iterable<Range<Integer>> ranges = list(closed(0, 10));
     // WHEN
-    AssertionError error = expectAssertionError(() -> assertThat(actual).enclosesAll(ranges));
+    AssertionError error = expectAssertionError(() -> assertThat(actual).intersectsAll(ranges));
     // THEN
     then(error).hasMessage(actualIsNull());
   }
@@ -51,7 +54,7 @@ class RangeSetAssert_enclosesAll_with_Iterable_Test {
     RangeSet<Integer> actual = ImmutableRangeSet.of();
     Iterable<Range<Integer>> ranges = null;
     // WHEN
-    Throwable thrown = catchThrowable(() -> assertThat(actual).enclosesAll(ranges));
+    Throwable thrown = catchThrowable(() -> assertThat(actual).intersectsAll(ranges));
     // THEN
     then(thrown).isInstanceOf(NullPointerException.class)
                 .hasMessage(shouldNotBeNull("ranges").create());
@@ -63,21 +66,21 @@ class RangeSetAssert_enclosesAll_with_Iterable_Test {
     RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 1));
     Iterable<Range<Integer>> ranges = emptySet();
     // WHEN
-    Throwable thrown = catchThrowable(() -> assertThat(actual).enclosesAll(ranges));
+    Throwable thrown = catchThrowable(() -> assertThat(actual).intersectsAll(ranges));
     // THEN
     then(thrown).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Expecting ranges not to be empty");
   }
 
   @Test
-  void should_fail_if_actual_does_not_enclose_ranges() {
+  void should_fail_if_actual_does_not_intersect_ranges() {
     // GIVEN
     RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 100));
     Iterable<Range<Integer>> ranges = list(closed(50, 70), closed(120, 150));
     // WHEN
-    AssertionError error = expectAssertionError(() -> assertThat(actual).enclosesAll(ranges));
+    AssertionError error = expectAssertionError(() -> assertThat(actual).intersectsAll(ranges));
     // THEN
-    then(error).hasMessage(shouldEnclose(actual, ranges, list(closed(120, 150))).create());
+    then(error).hasMessage(shouldIntersect(actual, ranges, list(closed(120, 150))).create());
   }
 
   @Test
@@ -86,18 +89,18 @@ class RangeSetAssert_enclosesAll_with_Iterable_Test {
     RangeSet<Integer> actual = ImmutableRangeSet.of();
     Iterable<Range<Integer>> ranges = emptySet();
     // WHEN/THEN
-    assertThat(actual).enclosesAll(ranges);
+    assertThat(actual).intersectsAll(ranges);
   }
 
   @Test
-  void should_pass_if_actual_encloses_ranges() {
+  void should_pass_if_actual_intersects_ranges() {
     // GIVEN
     RangeSet<Integer> rangeSet = ImmutableRangeSet.of(closed(0, 100));
-    List<Range<Integer>> ranges = list(closed(0, 10),
+    List<Range<Integer>> ranges = list(closed(-10, 10),
                                        open(50, 60),
-                                       open(90, 100));
+                                       open(90, 170));
     // WHEN/THEN
-    assertThat(rangeSet).enclosesAll(ranges);
+    assertThat(rangeSet).intersectsAll(ranges);
   }
 
 }
