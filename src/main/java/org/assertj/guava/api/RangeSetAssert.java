@@ -520,11 +520,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     assertRangeSetIntersectsAnyOfGivenValues(ranges);
   }
 
-  private void assertRangeSetIntersectsAnyOfGivenValues(Range<T>[] ranges) {
-    boolean intersects = stream(ranges).anyMatch(actual::intersects);
-    if (!intersects) throwAssertionError(shouldIntersectAnyOf(actual, ranges));
-  }
-
   /**
    * Verifies that the given {@code RangeSet} intersects at least one of the given ranges.
    * <p>
@@ -544,11 +539,21 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} does not intersect any of the given ranges.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
+   * @throws NullPointerException if ranges are null.
+   * @throws IllegalArgumentException if ranges are empty while actual is not empty.
    */
-  public RangeSetAssert<T> intersectsAnyRangesOf(final Iterable<Range<T>> ranges) {
-    rangeSets.assertIntersectsAnyRangesOf(info, actual, ranges);
+  public RangeSetAssert<T> intersectsAnyRangesOf(Iterable<Range<T>> ranges) {
+    isNotNull();
+    assertIntersectsAnyRangesOf(ranges);
     return myself;
+  }
+
+  @SuppressWarnings("unchecked")
+  private void assertIntersectsAnyRangesOf(Iterable<Range<T>> ranges) {
+    requireNonNull(ranges, shouldNotBeNull("ranges")::create);
+    if (actual.isEmpty() && !ranges.iterator().hasNext()) return;
+    failIfEmpty(ranges, "ranges");
+    assertRangeSetIntersectsAnyOfGivenValues(toArray(ranges, Range.class));
   }
 
   /**
@@ -570,11 +575,26 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} does not intersect any of the ranges from the given ranges
    *         set.
-   * @throws IllegalArgumentException if range set is null or it is empty while actual is not empty.
+   * @throws NullPointerException if range set is null.
+   * @throws IllegalArgumentException if range set is empty while actual is not empty.
    */
-  public RangeSetAssert<T> intersectsAnyRangesOf(final RangeSet<T> rangeSet) {
-    rangeSets.assertIntersectsAnyRangesOf(info, actual, rangeSet);
+  public RangeSetAssert<T> intersectsAnyRangesOf(RangeSet<T> rangeSet) {
+    isNotNull();
+    assertIntersectsAnyRangesOf(rangeSet);
     return myself;
+  }
+
+  @SuppressWarnings("unchecked")
+  private void assertIntersectsAnyRangesOf(RangeSet<T> rangeSet) {
+    requireNonNull(rangeSet, shouldNotBeNull("rangeSet")::create);
+    if (actual.isEmpty() && rangeSet.isEmpty()) return;
+    failIfEmpty(rangeSet);
+    assertRangeSetIntersectsAnyOfGivenValues(toArray(rangeSet.asRanges(), Range.class));
+  }
+
+  private void assertRangeSetIntersectsAnyOfGivenValues(Range<T>[] ranges) {
+    boolean intersects = stream(ranges).anyMatch(actual::intersects);
+    if (!intersects) throwAssertionError(shouldIntersectAnyOf(actual, ranges));
   }
 
   /**

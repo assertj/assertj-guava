@@ -19,7 +19,6 @@ import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsN
 import static org.assertj.core.internal.ErrorMessages.valuesToLookForIsEmpty;
 import static org.assertj.core.internal.ErrorMessages.valuesToLookForIsNull;
 import static org.assertj.core.util.IterableUtil.toArray;
-import static org.assertj.guava.error.RangeSetShouldIntersectAnyOf.shouldIntersectAnyOf;
 import static org.assertj.guava.error.RangeSetShouldNotEnclose.shouldNotEnclose;
 import static org.assertj.guava.error.RangeSetShouldNotIntersect.shouldNotIntersects;
 import static org.assertj.guava.internal.ErrorMessages.rangeSetValuesToLookForIsEmpty;
@@ -55,58 +54,6 @@ public class RangeSets {
    */
   public static RangeSets instance() {
     return INSTANCE;
-  }
-
-  /**
-   * Asserts that the given {@code RangeSet} intersects at least one element of the given range.
-   *
-   * @param <T> the type of rangeset elements
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @param range the range that actual {@code RangeSet} has to intersect.
-   * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not intersect at least one element of the given
-   *                        {@code range}.
-   * @throws IllegalArgumentException if range is null or range is empty while actual is not empty.
-   */
-  @SuppressWarnings("unchecked")
-  public <T extends Comparable<T>> void assertIntersectsAnyRangesOf(AssertionInfo info, RangeSet<T> actual,
-                                                                    Iterable<? extends Range<T>> range) {
-    assertNotNull(info, actual);
-    failIfNull(range);
-    // Should pass if both actual and expected are empty
-    if (actual.isEmpty() && !range.iterator().hasNext()) return;
-    failIfEmpty(range);
-    assertRangeSetIntersectsAnyOfGivenValues(info, actual, toArray(range, Range.class));
-  }
-
-  /**
-   * Asserts that the given {@code RangeSet} intersects at least one element of the given range set.
-   *
-   * @param <T> the type of rangeset elements
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @param rangeSet the range set that actual {@code RangeSet} has to intersect.
-   * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} does not intersect at least one element of the given
-   *                        {@code rangeSet}.
-   * @throws IllegalArgumentException if range set is null or range set is empty while actual is not empty.
-   */
-  @SuppressWarnings("unchecked")
-  public <T extends Comparable<T>> void assertIntersectsAnyRangesOf(AssertionInfo info, RangeSet<T> actual,
-                                                                    RangeSet<T> rangeSet) {
-    assertNotNull(info, actual);
-    failIfNull(rangeSet);
-    // Should pass if both actual and expected are empty
-    if (actual.isEmpty() && rangeSet.isEmpty()) return;
-    failIfEmpty(rangeSet);
-    assertRangeSetIntersectsAnyOfGivenValues(info, actual, toArray(rangeSet.asRanges(), Range.class));
-  }
-
-  private <T extends Comparable<T>> void assertRangeSetIntersectsAnyOfGivenValues(AssertionInfo info, RangeSet<T> actual,
-                                                                                  Range<T>[] ranges) {
-    final boolean match = stream(ranges).anyMatch(actual::intersects);
-    if (!match) throw failures.failure(info, shouldIntersectAnyOf(actual, ranges));
   }
 
   /**
