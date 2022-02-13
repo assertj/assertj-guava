@@ -90,10 +90,11 @@ class RangeSetAssert_enclosesAnyOf_Test {
   void should_pass_if_the_given_set_encloses_ranges() {
     // GIVEN
     RangeSet<Integer> actual = ImmutableRangeSet.of(closed(0, 100));
+    Range<Integer>[] ranges = array(open(0, 10),
+                           open(50, 60),
+                           open(90, 110));
     // WHEN/THEN
-    assertThat(actual).enclosesAnyOf(open(0, 10),
-                                     open(50, 60),
-                                     open(90, 110));
+    assertThat(actual).enclosesAnyOf(ranges);
   }
 
 }

@@ -27,6 +27,7 @@ import static org.assertj.core.util.IterableUtil.toArray;
 import static org.assertj.guava.error.RangeSetShouldEnclose.shouldEnclose;
 import static org.assertj.guava.error.RangeSetShouldEncloseAnyOf.shouldEncloseAnyOf;
 import static org.assertj.guava.error.RangeSetShouldIntersect.shouldIntersect;
+import static org.assertj.guava.error.RangeSetShouldIntersectAnyOf.shouldIntersectAnyOf;
 
 import java.util.List;
 
@@ -502,12 +503,26 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} does not intersect any of the given ranges.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
+   * @throws NullPointerException if ranges are null.
+   * @throws IllegalArgumentException if ranges are empty while actual is not empty.
    */
   @SafeVarargs
-  public final RangeSetAssert<T> intersectsAnyOf(final Range<T>... ranges) {
-    rangeSets.assertIntersectsAnyOf(info, actual, ranges);
+  public final RangeSetAssert<T> intersectsAnyOf(Range<T>... ranges) {
+    isNotNull();
+    assertIntersectsAnyOf(ranges);
     return myself;
+  }
+
+  private void assertIntersectsAnyOf(Range<T>[] ranges) {
+    requireNonNull(ranges, shouldNotBeNull("ranges")::create);
+    if (actual.isEmpty() && ranges.length == 0) return;
+    failIfEmpty(ranges, "ranges");
+    assertRangeSetIntersectsAnyOfGivenValues(ranges);
+  }
+
+  private void assertRangeSetIntersectsAnyOfGivenValues(Range<T>[] ranges) {
+    boolean intersects = stream(ranges).anyMatch(actual::intersects);
+    if (!intersects) throwAssertionError(shouldIntersectAnyOf(actual, ranges));
   }
 
   /**
