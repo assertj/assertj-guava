@@ -96,7 +96,7 @@ class RangeSetAssert_intersects_Test {
     Range<Integer>[] ranges = array(closed(-10, 10),
                                     open(50, 60),
                                     open(90, 170));
-    // THEN
+    // WHEN/THEN
     assertThat(actual).intersects(ranges);
   }
 

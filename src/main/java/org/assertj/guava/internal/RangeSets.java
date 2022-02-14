@@ -57,23 +57,6 @@ public class RangeSets {
   }
 
   /**
-   * Asserts that the given {@code RangeSet} does not intersect the given ranges.
-   *
-   * @param <T> the type of rangeset elements
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @param ranges the range that actual {@code RangeSet} has to intersect.
-   * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} intersects at least one element of the given {@code range}.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
-   */
-  public <T extends Comparable<T>> void assertDoesNotIntersect(AssertionInfo info, RangeSet<T> actual, Range<T>[] ranges) {
-    assertNotNull(info, actual);
-    failIfNullOrEmpty(ranges);
-    assertRangeSetDoesNotIntersectGivenValues(info, actual, ranges);
-  }
-
-  /**
    * Asserts that the given {@code RangeSet} does not intersect all elements from the given range.
    *
    * @param <T> the type of rangeset elements
