@@ -634,11 +634,6 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
     assertRangeSetDoesNotIntersectGivenValues(ranges);
   }
 
-  private void assertRangeSetDoesNotIntersectGivenValues(Range<T>[] ranges) {
-    List<?> intersected = stream(ranges).filter(actual::intersects).collect(toList());
-    if (!intersected.isEmpty()) throwAssertionError(shouldNotIntersects(actual, ranges, intersected));
-  }
-
   /**
    * Verifies that the given {@code RangeSet} does not intersect ranges from the given range set.
    * <p>
@@ -656,11 +651,20 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} intersects the ranges from the given range set.
-   * @throws IllegalArgumentException if range set is null or it is empty while actual is not empty.
+   * @throws NullPointerException if range set is null.
+   * @throws IllegalArgumentException if range set is empty.
    */
-  public RangeSetAssert<T> doesNotIntersectAnyRangeFrom(final RangeSet<T> rangeSet) {
-    rangeSets.assertDoesNotIntersectAnyRangeFrom(info, actual, rangeSet);
+  public RangeSetAssert<T> doesNotIntersectAnyRangeFrom(RangeSet<T> rangeSet) {
+    isNotNull();
+    assertDoesNotIntersectAnyRangeFrom(rangeSet);
     return myself;
+  }
+
+  @SuppressWarnings("unchecked")
+  private void assertDoesNotIntersectAnyRangeFrom(RangeSet<T> rangeSet) {
+    requireNonNull(rangeSet, shouldNotBeNull("rangeSet")::create);
+    failIfEmpty(rangeSet);
+    assertRangeSetDoesNotIntersectGivenValues(toArray(rangeSet.asRanges(), Range.class));
   }
 
   /**
@@ -682,11 +686,25 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} intersects all the given ranges.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
+   * @throws NullPointerException if ranges are null.
+   * @throws IllegalArgumentException if ranges are empty.
    */
-  public RangeSetAssert<T> doesNotIntersectAnyRangeFrom(final Iterable<Range<T>> ranges) {
-    rangeSets.assertDoesNotIntersectAnyRangeFrom(info, actual, ranges);
+  public RangeSetAssert<T> doesNotIntersectAnyRangeFrom(Iterable<Range<T>> ranges) {
+    isNotNull();
+    assertDoesNotIntersectAnyRangeFrom(ranges);
     return myself;
+  }
+
+  @SuppressWarnings("unchecked")
+  private void assertDoesNotIntersectAnyRangeFrom(Iterable<Range<T>> ranges) {
+    requireNonNull(ranges, shouldNotBeNull("ranges")::create);
+    failIfEmpty(ranges, "ranges");
+    assertRangeSetDoesNotIntersectGivenValues(toArray(ranges, Range.class));
+  }
+
+  private void assertRangeSetDoesNotIntersectGivenValues(Range<T>[] ranges) {
+    List<?> intersected = stream(ranges).filter(actual::intersects).collect(toList());
+    if (!intersected.isEmpty()) throwAssertionError(shouldNotIntersects(actual, ranges, intersected));
   }
 
   /**
@@ -940,7 +958,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws IllegalArgumentException if ranges are empty.
    */
   @SafeVarargs
-  public final RangeSetAssert<T> doesNotEnclose(final Range<T>... ranges) {
+  public final RangeSetAssert<T> doesNotEnclose(Range<T>... ranges) {
     isNotNull();
     assertDoesNotEnclose(ranges);
     return myself;
