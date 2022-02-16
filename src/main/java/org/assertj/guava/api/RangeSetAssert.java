@@ -28,6 +28,7 @@ import static org.assertj.guava.error.RangeSetShouldEnclose.shouldEnclose;
 import static org.assertj.guava.error.RangeSetShouldEncloseAnyOf.shouldEncloseAnyOf;
 import static org.assertj.guava.error.RangeSetShouldIntersect.shouldIntersect;
 import static org.assertj.guava.error.RangeSetShouldIntersectAnyOf.shouldIntersectAnyOf;
+import static org.assertj.guava.error.RangeSetShouldNotEnclose.shouldNotEnclose;
 import static org.assertj.guava.error.RangeSetShouldNotIntersect.shouldNotIntersects;
 
 import java.util.List;
@@ -618,7 +619,7 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} intersects the given ranges.
    * @throws NullPointerException if ranges are null.
-   * @throws IllegalArgumentException if ranges are empty while actual is not empty.
+   * @throws IllegalArgumentException if ranges are empty.
    */
   @SafeVarargs
   public final RangeSetAssert<T> doesNotIntersect(Range<T>... ranges) {
@@ -935,12 +936,25 @@ public class RangeSetAssert<T extends Comparable<T>> extends AbstractAssert<Rang
    * @return this {@link RangeSetAssert} for assertions chaining.
    * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
    * @throws AssertionError if the actual {@code RangeSet} encloses any of the given ranges.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
+   * @throws NullPointerException if ranges are null.
+   * @throws IllegalArgumentException if ranges are empty.
    */
   @SafeVarargs
   public final RangeSetAssert<T> doesNotEnclose(final Range<T>... ranges) {
-    rangeSets.assertDoesNotEnclose(info, actual, ranges);
+    isNotNull();
+    assertDoesNotEnclose(ranges);
     return myself;
+  }
+
+  private void assertDoesNotEnclose(Range<T>[] ranges) {
+    requireNonNull(ranges, shouldNotBeNull("ranges")::create);
+    failIfEmpty(ranges, "ranges");
+    assertRangeSetDoesNotEncloseGivenValues(ranges);
+  }
+
+  private void assertRangeSetDoesNotEncloseGivenValues(Range<T>[] ranges) {
+    List<?> enclosed = stream(ranges).filter(actual::encloses).collect(toList());
+    if (!enclosed.isEmpty()) throwAssertionError(shouldNotEnclose(actual, ranges, enclosed));
   }
 
   /**

@@ -13,7 +13,6 @@
 package org.assertj.guava.api;
 
 import static com.google.common.collect.Range.closed;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
@@ -63,8 +62,8 @@ class RangeSetAssert_doesNotContain_Test {
     // WHEN
     Throwable thrown = catchThrowable(() -> assertThat(actual).doesNotContain(values));
     // THEN
-    assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
-                      .hasMessage("Expecting values not to be empty");
+    then(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Expecting values not to be empty");
   }
 
   @Test

@@ -16,8 +16,6 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsEmpty;
 import static org.assertj.core.internal.ErrorMessages.iterableValuesToLookForIsNull;
-import static org.assertj.core.internal.ErrorMessages.valuesToLookForIsEmpty;
-import static org.assertj.core.internal.ErrorMessages.valuesToLookForIsNull;
 import static org.assertj.core.util.IterableUtil.toArray;
 import static org.assertj.guava.error.RangeSetShouldNotEnclose.shouldNotEnclose;
 import static org.assertj.guava.error.RangeSetShouldNotIntersect.shouldNotIntersects;
@@ -103,23 +101,6 @@ public class RangeSets {
   }
 
   /**
-   * Asserts that the given {@code RangeSet} does not enclose the given ranges.
-   *
-   * @param <T> the type of rangeset elements
-   * @param info contains information about the assertion.
-   * @param actual the given {@code RangeSet}.
-   * @param ranges the ranges that actual {@code RangeSet} has not to enclose.
-   * @throws AssertionError if the actual {@code RangeSet} is {@code null}.
-   * @throws AssertionError if the actual {@code RangeSet} encloses the given {@code ranges}.
-   * @throws IllegalArgumentException if ranges are null or ranges are empty while actual is not empty.
-   */
-  public <T extends Comparable<T>> void assertDoesNotEnclose(AssertionInfo info, RangeSet<T> actual, Range<T>[] ranges) {
-    assertNotNull(info, actual);
-    failIfNullOrEmpty(ranges);
-    assertRangeSetDoesNotEncloseGivenValues(info, actual, ranges);
-  }
-
-  /**
    * Asserts that the given {@code RangeSet} does not enclose all elements of the given range.
    *
    * @param <T> the type of rangeset elements
@@ -168,10 +149,6 @@ public class RangeSets {
     Objects.instance().assertNotNull(info, actual);
   }
 
-  private void failIfNull(Object[] array) {
-    throwIllegalArgumentExceptionIfTrue(array == null, valuesToLookForIsNull());
-  }
-
   private void failIfNull(Iterable<?> iterable) {
     throwIllegalArgumentExceptionIfTrue(iterable == null, iterableValuesToLookForIsNull());
   }
@@ -180,21 +157,12 @@ public class RangeSets {
     throwIllegalArgumentExceptionIfTrue(rangeSet == null, rangeSetValuesToLookForIsNull());
   }
 
-  private void failIfEmpty(Object[] values) {
-    throwIllegalArgumentExceptionIfTrue(values.length == 0, valuesToLookForIsEmpty());
-  }
-
   private void failIfEmpty(Iterable<?> values) {
     throwIllegalArgumentExceptionIfTrue(!values.iterator().hasNext(), iterableValuesToLookForIsEmpty());
   }
 
   private void failIfEmpty(RangeSet<?> rangeSet) {
     throwIllegalArgumentExceptionIfTrue(rangeSet.isEmpty(), rangeSetValuesToLookForIsEmpty());
-  }
-
-  private void failIfNullOrEmpty(Object[] values) {
-    failIfNull(values);
-    failIfEmpty(values);
   }
 
   private void failIfNullOrEmpty(Iterable<?> values) {
