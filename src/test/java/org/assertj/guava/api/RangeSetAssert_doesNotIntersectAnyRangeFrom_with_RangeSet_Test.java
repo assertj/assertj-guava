@@ -14,7 +14,7 @@ package org.assertj.guava.api;
 
 import static com.google.common.collect.Range.closed;
 import static com.google.common.collect.Range.open;
-import static java.util.Arrays.asList;
+import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.error.ShouldNotBeNull.shouldNotBeNull;
@@ -76,7 +76,7 @@ class RangeSetAssert_doesNotIntersectAnyRangeFrom_with_RangeSet_Test {
     // WHEN
     AssertionError error = expectAssertionError(() -> assertThat(actual).doesNotIntersectAnyRangeFrom(rangeSet));
     // THEN
-    then(error).hasMessage(shouldNotIntersects(actual, rangeSet, asList(open(90, 170))).create());
+    then(error).hasMessage(shouldNotIntersects(actual, rangeSet, singleton(open(90, 170))).create());
   }
 
   @Test
