@@ -17,10 +17,6 @@
     org.osgi.framework.bootdelegation=sun.reflect,\
     osgi.console=
 
-# Remove when the org.assertj.core.internal package dependency is removed.
-# This just lies to the resolver to say the package is available.
--runsystempackages: org.assertj.core.internal
-
 -runrequires: \
     bnd.identity;id='${project.artifactId}',\
     bnd.identity;id='junit-jupiter-engine',\
